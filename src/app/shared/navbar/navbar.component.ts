@@ -36,6 +36,22 @@ export class NavbarComponent {
     }
   ];
 
-  navBottomItems: NavItem[] = [];
+  navBottomItems: NavItem[] = [
+    {
+      tooltip: 'Settings',
+      icon: 'settings',
+      route: 'settings'
+    },
+    {
+      tooltip: 'Profile',
+      icon: 'person',
+      route: 'profile'
+    },
+    {
+      tooltip: 'Help',
+      icon: 'help',
+      route: 'help'
+    }
+  ];
 
 }

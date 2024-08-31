@@ -1,11 +1,10 @@
 <app-navbar></app-navbar>
-<mat-sidenav-container class="base-container">
-  <mat-sidenav #sidenav mode="side">
-    Subnav
+<mat-sidenav-container class="base-container" hasBackdrop="false">
+  <mat-sidenav #sidenav mode="over">
+    <app-sub-sidenav></app-sub-sidenav>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    Test
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<app-navbar></app-navbar>
