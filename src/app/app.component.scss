@@ -1,0 +1,26 @@
+/* Make sure the app-navbar is fixed and doesn't take up space in the document flow */
+app-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 105px;
+    height: 100vh;
+    z-index: 1000;
+  }
+  
+  /* Adjust the sidenav-container to account for the navbar's width */
+  .base-container {
+    margin-left: 105px;
+    height: 100vh;
+    padding-left: 0.5rem;
+  }
+  
+  /* Ensure that the mat-sidenav is not overlapping with the navbar */
+  mat-sidenav {
+    margin-top: 0; /* Adjust this if you have a top navbar */
+  }
+  
+  /* Adjust mat-sidenav-content to avoid overlap */
+  mat-sidenav-content {
+    padding: 20px;
+  }

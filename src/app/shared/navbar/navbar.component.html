@@ -1,1 +1,16 @@
-<p>navbar works!</p>
+<nav class="nav-rail">
+    <mat-nav-list>
+        <a class="brand" routerLink="home">
+            Logo
+        </a>
+        @for (navItem of navTopItems; track navItem.tooltip) {
+            <app-nav-item [navItem]="navItem"></app-nav-item>
+        }
+    </mat-nav-list>
+    <div class="spacer"></div>
+    <mat-nav-list class="bottom-nav">
+        @for (bottomNavItem of navBottomItems; track bottomNavItem.tooltip) {
+            <app-nav-item [navItem]="bottomNavItem"></app-nav-item>
+        }
+    </mat-nav-list>
+</nav>
