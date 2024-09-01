@@ -1,12 +1,9 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import {MatListItem, MatListModule} from '@angular/material/list';
+import { Component, output } from '@angular/core';
+import {  RouterLink } from '@angular/router';
 import { NavItemComponent } from './nav-item/nav-item.component';
 import { NavModule } from './nav.module';
 import { NavItem } from './nav-item/nav-item.model';
+import { NavEvent } from './nav-event.item';
 
 
 
@@ -15,9 +12,10 @@ import { NavItem } from './nav-item/nav-item.model';
   standalone: true,
   imports: [ RouterLink, NavModule, NavItemComponent ],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
+  navClick = output<NavEvent>();
   navTopItems: NavItem[] = [
     {
       tooltip: 'Home',
@@ -53,5 +51,15 @@ export class NavbarComponent {
       route: 'help'
     }
   ];
+
+  toggleSidenav(inputType: string, navItem: NavItem) {
+    const navEvent: NavEvent = {
+      type: inputType,
+      label: navItem.tooltip,
+      route: navItem.route,
+    }
+    this.navClick.emit(navEvent);
+  }
+
 
 }

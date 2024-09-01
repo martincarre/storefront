@@ -7,9 +7,8 @@ import { NavModule } from '../nav.module';
   standalone: true,
   imports: [ NavModule ],
   templateUrl: './nav-item.component.html',
-  styleUrl: './nav-item.component.scss'
+  styleUrl: './nav-item.component.scss',
 })
 export class NavItemComponent {
   navItem = input.required<NavItem>();
-
 }

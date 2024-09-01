@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/navbar/navbar.component';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { SubSidenavComponent } from "./shared/sub-sidenav/sub-sidenav.component";
 
 @Component({
@@ -13,5 +13,13 @@ import { SubSidenavComponent } from "./shared/sub-sidenav/sub-sidenav.component"
 })
 export class AppComponent {
   title = 'storefront';
+  opened = signal<boolean>(false);
+
   
+  sideNavToggle(inputType: string) {
+    if (inputType ===  'click') {
+      this.opened.set(!this.opened());
+      console.log(this.opened());
+    }
+  }
 }
