@@ -1,9 +1,10 @@
-import { Component, output } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import {  RouterLink } from '@angular/router';
 import { NavItemComponent } from './nav-item/nav-item.component';
 import { NavModule } from './nav.module';
 import { NavItem } from './nav-item/nav-item.model';
 import { NavEvent } from './nav-event.item';
+import { NavService } from '../nav.service';
 
 
 
@@ -16,47 +17,16 @@ import { NavEvent } from './nav-event.item';
 })
 export class NavbarComponent {
   navClick = output<NavEvent>();
-  navTopItems: NavItem[] = [
-    {
-      tooltip: 'Home',
-      icon: 'home',
-      route: 'home'
-    },
-    {
-      tooltip: 'About',
-      icon: 'info',
-      route: 'about'
-    },
-    {
-      tooltip: 'Contact',
-      icon: 'email',
-      route: 'contact'
-    }
-  ];
-
-  navBottomItems: NavItem[] = [
-    {
-      tooltip: 'Settings',
-      icon: 'settings',
-      route: 'settings'
-    },
-    {
-      tooltip: 'Profile',
-      icon: 'person',
-      route: 'profile'
-    },
-    {
-      tooltip: 'Help',
-      icon: 'help',
-      route: 'help'
-    }
-  ];
+  private navService = inject<NavService>(NavService);
+  navBottomItems = this.navService.getNavBottomItems();
+  navTopItems = this.navService.getNavTopItems();
 
   toggleSidenav(inputType: string, navItem: NavItem) {
     const navEvent: NavEvent = {
       type: inputType,
       label: navItem.tooltip,
       route: navItem.route,
+      subItems: navItem.subItems
     }
     this.navClick.emit(navEvent);
   }

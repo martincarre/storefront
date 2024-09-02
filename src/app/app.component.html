@@ -1,10 +1,14 @@
+
 <app-navbar (navClick)="sideNavToggle($event)"></app-navbar>
-<mat-sidenav-container class="base-container" hasBackdrop="false">
+<mat-sidenav-container class="base-container" (backdropClick)="closeSidenav()">
   <mat-sidenav #sidenav mode="over" [opened]="opened()">
-    <h1>Drawer</h1>
+    @if (currOpenedItem()?.subItems) {
+      <app-sub-sidenav [navItems]="currOpenedItem()?.subItems" [title]="currOpenedItem()?.label" (closeOnSelect)="closeSidenav()"></app-sub-sidenav>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>
     <h1>Content</h1>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,39 @@
+/* Ensure the nav-item content is centered */
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Adjust the spacing between the text and icon as needed */
+    text-align: center; /* Center text inside the span */
+    height: 3rem;
+    margin-bottom: 1rem;
+
+}
+
+/* Make sure the span text is vertically centered */
+.nav-text {
+    display: inline-block; /* Ensure the span is treated as a block element */
+    line-height: 1.5; /* Adjust this value as necessary to vertically align the text */
+    font-size: 16px; /* Adjust the size of the text */
+    vertical-align: middle; /* Align the span content vertically */
+}
+
+/* Optional: Adjust the icon style */
+.nav-icon {
+    font-size: 24px; /* Adjust the size of the icon */
+    vertical-align: middle; /* Align the icon vertically with the text */
+    margin: 0rem 0.65rem;
+}
+
+.container {
+    padding: 1.65rem;
+    text-align: center;
+}
+
+h5 { 
+    background: linear-gradient(90deg, #dd0031, #ea4c89, #7044af, #0086ff); /* Angular 18 gradient colors */
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Make the text color transparent */
+}

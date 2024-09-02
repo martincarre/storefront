@@ -1,0 +1,22 @@
+a {
+    display: flex;
+    justify-content: center; /* Center the icon horizontally */
+    align-items: center; /* Center the icon vertically */
+    width: 72px;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+a mat-icon {
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+a.nav-active-item mat-icon {
+    background: linear-gradient(90deg, #dd0031, #ea4c89, #7044af, #0086ff);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Make the icon color transparent */
+    -webkit-text-fill-color: transparent; /* Ensures proper text color in webkit browsers */
+}

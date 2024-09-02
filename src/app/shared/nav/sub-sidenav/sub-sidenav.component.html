@@ -1,0 +1,11 @@
+<div class="container">
+    <h5>{{ title() }}</h5>
+    <mat-nav-list>
+        @for (navItem of navItems(); track navItem.route) {
+            <a mat-list-item [routerLink]="navItem.route" class="nav-item" (click)="onSelect(navItem)">
+                <span class="nav-text">{{ navItem.tooltip }}</span> 
+                <mat-icon class="nav-icon">{{ navItem.icon }}</mat-icon>
+            </a>
+        }
+    </mat-nav-list>
+</div>
