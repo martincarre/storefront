@@ -1,10 +1,12 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { NavItem } from './navbar/nav-item/nav-item.model';
+import { UserService } from '../../user/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavService {
+  private userService = inject<UserService>(UserService);
   readonly navTopItems = signal<NavItem[]>([
     {
       tooltip: 'Home',
@@ -61,7 +63,10 @@ export class NavService {
     {
       tooltip: 'Logout',
       icon: 'logout',
-      route: 'logout'
+      route: 'logout',
+      onClickAction: () => {
+        this.userService.logout();
+      }
     }
   ]);
 

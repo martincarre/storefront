@@ -30,6 +30,7 @@ export class UserService {
   login(email: string, password: string) {
     const isAuthedUser = this.authedUserHandler();
     if (isAuthedUser) {
+      console.log(this.aUser());
       return;
     }
     const foundUser = mockAuthUsers.find(user => user.email === email);
@@ -39,16 +40,19 @@ export class UserService {
       return;
     } else {
       this.aUser.set(foundUser);
+      console.log('Login:', this.aUser());
     }
   }
 
   logout() {
-    console.log('Logout');
+    this.aUser.set(null);
+    this.router.navigate(['/']);
+    console.log('Logout: ', this.aUser());
   }
 
   authedUserHandler(): boolean { 
     if (this.aUser()) {
-      alert('User already signed in. You can\'t sign up again.');
+      alert('User already signed in. You can\'t perform this action again... Try logging out first.');
       this.router.navigate(['/']);
       return true;
     } else {

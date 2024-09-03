@@ -2,7 +2,8 @@ export interface NavItem {
     tooltip: string;
     icon: string;
     coloredIcon?: boolean;
-    route: string;
+    route?: string;
     subItems?: NavItem[];
     signedInDisplay?: boolean;
+    onClickAction?: Function | null;
 }
