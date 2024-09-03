@@ -1,0 +1,15 @@
+<div class="container">
+    <mat-card class="center-card-container">
+        <mat-card-header>
+            <mat-card-title>
+                <h1>Sign up</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <app-dynamic-form [questions]="questions$ | async" (submitEvent)="onSubmit($event)">
+            <span class="login">Already have an account? <a routerLink="/user/login">Login!</a></span>
+            <mat-card-actions>
+                <button mat-fab extended color="primary" type="submit">Sign up</button>
+            </mat-card-actions>
+        </app-dynamic-form>
+    </mat-card>
+</div>

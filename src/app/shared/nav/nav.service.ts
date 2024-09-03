@@ -10,58 +10,58 @@ export class NavService {
       tooltip: 'Home',
       icon: 'home',
       route: 'home',
+    },
+    {
+      tooltip: 'Products',
+      icon: 'stream',
+      route: 'products',
       subItems: [
         {
-          tooltip: 'Dashboard',
-          icon: 'dashboard',
-          route: 'dashboard'
+          tooltip: 'Google Maps Finder',
+          icon: 'pin_drop',
+          route: 'products/gm-finder'
         },
         {
-          tooltip: 'Messages',
-          icon: 'message',
-          route: 'messages'
+          tooltip: 'Company Information',
+          icon: 'find_in_page',
+          route: 'products/company-info'
         }
       ]
     },
     {
-      tooltip: 'About',
-      icon: 'info',
-      route: 'about',
-      subItems: [
-        {
-          tooltip: 'Company',
-          icon: 'business',
-          route: 'company'
-        },
-        {
-          tooltip: 'Team',
-          icon: 'group',
-          route: 'team'
-        }
-      ]
-    },
-    {
-      tooltip: 'Contact',
-      icon: 'email',
-      route: 'contact'
+      tooltip: 'Google Maps Finder',
+      icon: 'pin_drop',
+      route: 'gm-finder'
     }
   ]);
 
   readonly navBottomItems = signal<NavItem[]>([
     {
+      tooltip: 'Pricing',
+      icon: 'sell',
+      route: 'pricing'
+    },
+    {
+      tooltip: 'Login',
+      icon: 'login',
+      route: 'user/login'
+    },
+    {
+      tooltip: 'Sign up',
+      icon: 'rocket_launch',
+      route: 'user/signup',
+      coloredIcon: true,
+    },
+    {
       tooltip: 'Settings',
-      icon: 'settings',
-      route: 'settings'
-    },
-    {
-      tooltip: 'Profile',
       icon: 'person',
-      route: 'profile'
+      route: 'user',
+      coloredIcon: true
     },
     {
-      tooltip: 'Help',
-      icon: 'help',
-      route: 'help'
+      tooltip: 'Logout',
+      icon: 'logout',
+      route: 'logout'
     }
   ]);
 

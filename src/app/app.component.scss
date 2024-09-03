@@ -28,10 +28,41 @@ mat-sidenav-content {
   padding: 20px;
 }
 
+
+h1 {
+  background: linear-gradient(90deg, #dd0031, #ea4c89, #7044af, #0086ff); /* Angular 18 gradient colors */
+  background-size: 200%; /* Increase the background size to allow movement */
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent; /* Make the text color transparent */
+  animation: gradientMove 5s infinite linear; /* Apply the animation */
+}
+
+@keyframes gradientMove {
+  0% {
+      background-position: 0% 50%;
+  }
+  100% {
+      background-position: 100% 50%;
+  }
+}
+
+.container { 
+  padding: 1.65rem;
+}
+
+mat-sidenav-content { 
+  padding: 0;
+}
+
 @media (max-width: 768px) {
   /* Adjust the sidenav width for smaller screens */
   mat-sidenav {
     width: 100vw;
     max-width: calc(100vw - 105px);
+  }
+  .container { 
+    padding: 0.5rem;
   }
 }

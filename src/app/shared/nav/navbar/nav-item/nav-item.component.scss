@@ -12,11 +12,21 @@ a mat-icon {
     transition: color 0.3s;
 }
 
-a.nav-active-item mat-icon {
-    background: linear-gradient(90deg, #dd0031, #ea4c89, #7044af, #0086ff);
+a.nav-colored-item mat-icon {
+    background: linear-gradient(90deg, #dd0031, #ea4c89, #7044af, #0086ff); /* Angular 18 gradient colors */
+    background-size: 200%; /* Increase the background size to allow movement */
     -webkit-background-clip: text;
     -moz-background-clip: text;
     background-clip: text;
-    color: transparent; /* Make the icon color transparent */
-    -webkit-text-fill-color: transparent; /* Ensures proper text color in webkit browsers */
+    color: transparent; /* Make the text color transparent */
+    animation: gradientMove 5s infinite linear; /* Apply the animation */
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
 }

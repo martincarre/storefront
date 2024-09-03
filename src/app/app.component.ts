@@ -1,4 +1,4 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { Component, inject, signal, viewChild, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/nav/navbar/navbar.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
@@ -11,7 +11,8 @@ import { NavService } from './shared/nav/nav.service';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, MatSidenavModule, SubSidenavComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
   title = 'storefront';

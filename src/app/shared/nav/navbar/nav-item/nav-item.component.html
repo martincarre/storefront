@@ -1,6 +1,8 @@
 <a mat-list-item 
     [matTooltip]="navItem().tooltip" 
     [routerLink]="navItem().route" 
-    routerLinkActive="nav-active-item">
+    routerLinkActive="nav-active-item"
+    [ngClass]="{'nav-colored-item': navItem().coloredIcon}"
+    >
     <mat-icon>{{ navItem().icon }}</mat-icon>
 </a>

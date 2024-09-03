@@ -1,0 +1,24 @@
+<div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      @for (question of questions(); track question) {
+        @if (isStyleSection(question)) {
+          <div class="form-row">
+            <app-style-section [section]="question"/>
+          </div>
+        }
+        @else {
+          <div class="form-row">
+            <app-question [question]="question" [form]="form"></app-question>
+          </div>
+        }
+      }
+      <div class="form-row">
+        <ng-content />
+      </div>
+    </form>
+    @if (payLoad) {
+      <div class="form-row">
+        <strong>Saved the following values</strong><br>{{ payLoad }}
+      </div>
+    }
+</div>

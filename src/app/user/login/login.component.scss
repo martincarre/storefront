@@ -1,0 +1,21 @@
+.center-card-container { 
+    margin: auto; 
+    width: 45%; 
+    padding: 1.75rem;
+}
+
+/* Media query for smartphones */
+@media (max-width: 767px) {
+    .center-card-container {
+        width: 100%;
+    }
+}
+
+.signup {
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+mat-card-actions {
+    margin-top: 1.5rem;
+}
