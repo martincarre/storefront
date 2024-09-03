@@ -55,7 +55,7 @@ export class NavService {
     {
       tooltip: 'Settings',
       icon: 'person',
-      route: 'user',
+      route: 'user/settings',
       coloredIcon: true
     },
     {

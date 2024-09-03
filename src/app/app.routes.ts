@@ -23,6 +23,10 @@ export const routes: Routes = [
                 path: 'signup',
                 loadComponent: () => import("./user/signup/signup.component").then(c => c.SignupComponent),
                 title: 'Signup',
+            },
+            {
+                path: 'settings',
+                loadComponent: () => import("./user/user-details/user-details.component").then(c => c.UserDetailsComponent),
             }
         ]
     },
