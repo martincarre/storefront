@@ -30,21 +30,24 @@ mat-sidenav-content {
 
 
 h1 {
-  background: linear-gradient(90deg, #dd0031, #ea4c89, #7044af, #0086ff); /* Angular 18 gradient colors */
-  background-size: 200%; /* Increase the background size to allow movement */
+  background: linear-gradient(90deg, #dd0031, #ea4c89, #7044af, #0086ff);
+  background-size: 200%;
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
-  color: transparent; /* Make the text color transparent */
-  animation: gradientMove 5s infinite linear; /* Apply the animation */
+  color: transparent;
+  animation: gradientMove 10s infinite linear;
 }
 
 @keyframes gradientMove {
   0% {
-      background-position: 0% 50%;
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
   100% {
-      background-position: 100% 50%;
+    background-position: 0% 50%;
   }
 }
 
