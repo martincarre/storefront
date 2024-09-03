@@ -10,7 +10,7 @@ export class UserService {
   private router = inject(Router);
   private aUser = signal<AuthedUser | null>(null);
 
-  // NOTE: Might have to set this user here in the constructor. Not sure.
+  // TODO: Might have to set this user here in the constructor. Not sure...
   constructor() {
     
   }
