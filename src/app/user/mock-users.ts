@@ -1,4 +1,4 @@
-import { AuthedUser } from "./user.interface";
+import { AuthedUser } from "../shared/auth/authed-user.interface";
 
 export const mockAuthUsers: AuthedUser[] = [
     {

@@ -1,12 +1,12 @@
 import { inject, Injectable, signal} from '@angular/core';
-import { AuthedUser } from '../shared/auth/authed-user.interface';
+import { AuthedUser } from './authed-user.interface';
 import { Router } from '@angular/router';
-import { mockAuthUsers } from './mock-users';
+import { mockAuthUsers } from '../../user/mock-users';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class AuthService {
   private router = inject(Router);
   private aUser = signal<AuthedUser | null>(null);
 
