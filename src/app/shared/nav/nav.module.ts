@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { HasRoleDirective } from '../auth/has-role.directive';
 
 
 
@@ -17,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
     RouterLink,
     MatTooltipModule,
     MatIconModule,
+    HasRoleDirective,
   ],
   exports: [
     MatListModule,
@@ -24,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
     RouterLink,
     MatTooltipModule,
     MatIconModule,
+    HasRoleDirective,
   ]
 })
 export class NavModule { }

@@ -5,6 +5,7 @@
         routerLinkActive="nav-active-item"
         [ngClass]="{'nav-colored-item': navItem().coloredIcon}"
         (click)="navItem().onClickAction?.()"
+        *appHasRole="navItem().requiredRoles"
         >
         <mat-icon>{{ navItem().icon }}</mat-icon>
     </a>
@@ -15,6 +16,7 @@
         [routerLink]="navItem().route" 
         routerLinkActive="nav-active-item"
         [ngClass]="{'nav-colored-item': navItem().coloredIcon}"
+        *appHasRole="navItem().requiredRoles"
         >
         <mat-icon>{{ navItem().icon }}</mat-icon>
     </a>

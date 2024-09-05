@@ -1,4 +1,4 @@
-import { inject, Injectable, signal} from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { AuthedUser } from './authed-user.interface';
 import { Router } from '@angular/router';
 import { mockAuthUsers } from '../../user/mock-users';
@@ -15,8 +15,8 @@ export class AuthService {
     
   }
 
-  getAuthedUser() {
-    
+  getAuthedUser(): Signal<AuthedUser | null> {
+    return this.aUser.asReadonly();
   }
 
   signup(signupData: any) {

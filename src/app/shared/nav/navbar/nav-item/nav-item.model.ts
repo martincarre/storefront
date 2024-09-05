@@ -1,3 +1,5 @@
+import { UserRole } from "../../../auth/user-role.interface";
+
 export interface NavItem {
     tooltip: string;
     icon: string;
@@ -6,4 +8,5 @@ export interface NavItem {
     subItems?: NavItem[];
     signedInDisplay?: boolean;
     onClickAction?: Function | null;
+    requiredRoles: UserRole[];
 }

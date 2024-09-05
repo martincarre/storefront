@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { NavItem } from './navbar/nav-item/nav-item.model';
 import { AuthService } from '../auth/auth.service';
+import { UserRole } from '../auth/user-role.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class NavService {
       tooltip: 'Home',
       icon: 'home',
       route: 'home',
+      requiredRoles: []
     },
     {
       tooltip: 'Products',
@@ -21,19 +23,44 @@ export class NavService {
         {
           tooltip: 'Google Maps Finder',
           icon: 'pin_drop',
-          route: 'products/gm-finder'
+          route: 'products/gm-finder',
+          requiredRoles: []
         },
         {
           tooltip: 'Company Information',
           icon: 'find_in_page',
-          route: 'products/company-info'
+          route: 'products/company-info',
+          requiredRoles: []
         }
-      ]
+      ],
+      requiredRoles: []
     },
     {
       tooltip: 'Google Maps Finder',
       icon: 'pin_drop',
-      route: 'gm-finder'
+      route: 'gm-finder',
+      coloredIcon: true,
+      subItems: [
+        {
+          tooltip: 'Dashboard',
+          icon: 'dashboard',
+          route: 'gm-finder/dashboard',
+          requiredRoles: [UserRole.Admin, UserRole.User, UserRole.Moderator],
+        },
+        {
+          tooltip: 'Search',
+          icon: 'search',
+          route: 'gm-finder/search',
+          requiredRoles: [UserRole.Admin, UserRole.User, UserRole.Moderator],
+        },
+        {
+          tooltip: 'Previous Results',
+          icon: 'list',
+          route: 'gm-finder/results',
+          requiredRoles: [UserRole.Admin, UserRole.User, UserRole.Moderator],
+        },
+      ],
+      requiredRoles: [UserRole.Admin, UserRole.User, UserRole.Moderator],
     }
   ]);
 
@@ -41,24 +68,28 @@ export class NavService {
     {
       tooltip: 'Pricing',
       icon: 'sell',
-      route: 'pricing'
+      route: 'pricing',
+      requiredRoles: []
     },
     {
       tooltip: 'Login',
       icon: 'login',
-      route: 'user/login'
+      route: 'user/login',
+      requiredRoles: []
     },
     {
       tooltip: 'Sign up',
       icon: 'rocket_launch',
       route: 'user/signup',
       coloredIcon: true,
+      requiredRoles: []
     },
     {
       tooltip: 'Settings',
       icon: 'person',
       route: 'user/settings',
-      coloredIcon: true
+      coloredIcon: true,
+      requiredRoles: []
     },
     {
       tooltip: 'Logout',
@@ -66,7 +97,8 @@ export class NavService {
       route: 'logout',
       onClickAction: () => {
         this.authService.logout();
-      }
+      },
+      requiredRoles: []
     }
   ]);
 
