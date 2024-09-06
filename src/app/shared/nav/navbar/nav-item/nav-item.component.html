@@ -1,23 +1,21 @@
-@if (navItem().onClickAction) { 
-    <a mat-list-item 
-        [matTooltip]="navItem().tooltip" 
-        [routerLink]="navItem().route" 
-        routerLinkActive="nav-active-item"
-        [ngClass]="{'nav-colored-item': navItem().coloredIcon}"
-        (click)="navItem().onClickAction?.()"
-        *appHasRole="navItem().requiredRoles"
-        >
-        <mat-icon>{{ navItem().icon }}</mat-icon>
-    </a>
-}
-@else { 
-    <a mat-list-item 
-        [matTooltip]="navItem().tooltip" 
-        [routerLink]="navItem().route" 
-        routerLinkActive="nav-active-item"
-        [ngClass]="{'nav-colored-item': navItem().coloredIcon}"
-        *appHasRole="navItem().requiredRoles"
-        >
-        <mat-icon>{{ navItem().icon }}</mat-icon>
-    </a>
-}
+<ng-template [appHasRole]="navItem().requiredRoles">
+    @if (navItem().onClickAction) { 
+        <a mat-list-item 
+            [matTooltip]="navItem().tooltip" 
+            [ngClass]="{'nav-colored-item': navItem().coloredIcon}"
+            (click)="navItem().onClickAction?.()"
+            >
+            <mat-icon>{{ navItem().icon }}</mat-icon>
+        </a>
+    }
+    @else { 
+        <a mat-list-item 
+            [matTooltip]="navItem().tooltip" 
+            [routerLink]="navItem().route" 
+            routerLinkActive="nav-active-item"
+            [ngClass]="{'nav-colored-item': navItem().coloredIcon}"
+            >
+            <mat-icon>{{ navItem().icon }}</mat-icon>
+        </a>
+    }
+</ng-template>

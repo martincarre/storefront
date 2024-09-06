@@ -13,7 +13,7 @@ export class NavService {
       tooltip: 'Home',
       icon: 'home',
       route: 'home',
-      requiredRoles: []
+      requiredRoles: [UserRole.Guest]
     },
     {
       tooltip: 'Products',
@@ -24,16 +24,16 @@ export class NavService {
           tooltip: 'Google Maps Finder',
           icon: 'pin_drop',
           route: 'products/gm-finder',
-          requiredRoles: []
+          requiredRoles: [UserRole.Guest]
         },
         {
           tooltip: 'Company Information',
           icon: 'find_in_page',
           route: 'products/company-info',
-          requiredRoles: []
+          requiredRoles: [UserRole.Guest]
         }
       ],
-      requiredRoles: []
+      requiredRoles: [UserRole.Guest]
     },
     {
       tooltip: 'Google Maps Finder',
@@ -69,27 +69,27 @@ export class NavService {
       tooltip: 'Pricing',
       icon: 'sell',
       route: 'pricing',
-      requiredRoles: []
+      requiredRoles: [UserRole.Guest]
     },
     {
       tooltip: 'Login',
       icon: 'login',
       route: 'user/login',
-      requiredRoles: []
+      requiredRoles: [UserRole.Guest]
     },
     {
       tooltip: 'Sign up',
       icon: 'rocket_launch',
       route: 'user/signup',
       coloredIcon: true,
-      requiredRoles: []
+      requiredRoles: [UserRole.Guest]
     },
     {
       tooltip: 'Settings',
       icon: 'person',
       route: 'user/settings',
       coloredIcon: true,
-      requiredRoles: []
+      requiredRoles: [UserRole.Admin, UserRole.User, UserRole.Moderator]
     },
     {
       tooltip: 'Logout',
@@ -98,7 +98,7 @@ export class NavService {
       onClickAction: () => {
         this.authService.logout();
       },
-      requiredRoles: []
+      requiredRoles: [UserRole.Admin, UserRole.User, UserRole.Moderator]
     }
   ]);
 

@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { NavItem } from '../navbar/nav-item/nav-item.model';
 import { NavModule } from '../nav.module';
 // import { EventEmitter } from 'stream';
@@ -8,7 +8,8 @@ import { NavModule } from '../nav.module';
   standalone: true,
   imports: [NavModule],
   templateUrl: './sub-sidenav.component.html',
-  styleUrl: './sub-sidenav.component.scss'
+  styleUrl: './sub-sidenav.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SubSidenavComponent {
   navItems = input.required<NavItem[] | undefined | null>();

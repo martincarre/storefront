@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SignupFormService } from './signup-form.service';
 import { QuestionBase } from '../../shared/forms/dynamic-forms/question-classes/question-base.class';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../user.service';
 import { FormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../shared/auth/auth.service';
 
 
 @Component({
@@ -15,11 +16,12 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [UserModule, MatButtonModule, RouterLink],
   templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss'
+  styleUrl: './signup.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignupComponent {
   sufs = inject<SignupFormService>(SignupFormService);
-  userService = inject<UserService>(UserService);
+  authService = inject<AuthService>(AuthService);
   questions$: Observable<(QuestionBase<string> | StyleSection<any> )[]>;
 
   constructor() { 
@@ -27,6 +29,6 @@ export class SignupComponent {
   }
 
   onSubmit($event: any) {
-    this.userService.signup(($event as FormGroup).value);
+    this.authService.signup(($event as FormGroup).value);
   }
 }

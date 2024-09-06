@@ -9,15 +9,7 @@ import { mockAuthUsers } from '../../user/mock-users';
 export class AuthService {
   private router = inject(Router);
   private aUser = signal<AuthedUser | null>(null);
-
-  // TODO: Might have to set this user here in the constructor. Not sure...
-  constructor() {
-    
-  }
-
-  getAuthedUser(): Signal<AuthedUser | null> {
-    return this.aUser.asReadonly();
-  }
+  authedUser = this.aUser.asReadonly();
 
   signup(signupData: any) {
     const isAuthedUser = this.authedUserHandler();

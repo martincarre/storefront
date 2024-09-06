@@ -7,6 +7,6 @@ export interface NavItem {
     route?: string;
     subItems?: NavItem[];
     signedInDisplay?: boolean;
-    onClickAction?: Function | null;
+    onClickAction?: Function;
     requiredRoles: UserRole[];
 }

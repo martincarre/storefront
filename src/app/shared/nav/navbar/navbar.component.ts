@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import {  RouterLink } from '@angular/router';
 import { NavItemComponent } from './nav-item/nav-item.component';
 import { NavModule } from '../nav.module';
@@ -14,6 +14,7 @@ import { NavService } from '../nav.service';
   imports: [ RouterLink, NavModule, NavItemComponent ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent {
   navClick = output<NavEvent>();

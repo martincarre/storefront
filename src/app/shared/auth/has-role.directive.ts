@@ -1,4 +1,4 @@
-import { Directive, effect, inject, Input, Signal, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, effect, inject, input, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AuthService } from './auth.service';
 import { UserRole } from './user-role.interface';
 import { AuthedUser } from './authed-user.interface';
@@ -9,33 +9,31 @@ import { AuthedUser } from './authed-user.interface';
 })
 export class HasRoleDirective {
   private authService = inject(AuthService);
+  private templateRef = inject(TemplateRef);
+  private viewContainer = inject(ViewContainerRef);
+
   private currentUserRoles: UserRole[] = [];
-  private isLoggedIn: boolean = false;
-  private requiredRoles: UserRole[] = [];
+  requiredRoles = input.required<UserRole[]>({ alias: 'appHasRole' });
   
   // FIXME: Need to work on this. It's not working properly.
-  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef) {
+  constructor() {
     effect(() => {
-      const authedUser: Signal<AuthedUser | null> = this.authService.getAuthedUser();
-      const authedUserValue = authedUser();
-      this.isLoggedIn = authedUserValue !== null;
-      if (authedUserValue) {
-        this.currentUserRoles = authedUserValue.roles;
+      if (this.authService.authedUser()) {
+        this.currentUserRoles = (this.authService.authedUser() as AuthedUser).roles;
+      } else {
+        this.currentUserRoles = [UserRole.Guest];
       }
       this.updateView();
     })
   }
-  
-  @Input('appHasRole') set appHasRoles(roles: UserRole[]) {
-    this.requiredRoles = roles;
-    this.updateView();
-  }
 
   private updateView(): void {
-    console.log('Current user roles:', this.currentUserRoles);
-    this.viewContainer.clear();
-    if (this.isLoggedIn && this.requiredRoles.some(role => this.currentUserRoles.includes(role))) {
+    if (this.requiredRoles().some(role => this.currentUserRoles.includes(role))) {
+      console.log('User has required role.');
       this.viewContainer.createEmbeddedView(this.templateRef);
+    } else {
+      console.log('User does not have required role.');
+      this.viewContainer.clear();
     }
   }
 }

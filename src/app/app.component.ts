@@ -5,11 +5,13 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { SubSidenavComponent } from "./shared/nav/sub-sidenav/sub-sidenav.component";
 import { NavEvent } from './shared/nav/navbar/nav-event.item';
 import { NavService } from './shared/nav/nav.service';
+import { AuthService } from './shared/auth/auth.service';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, MatSidenavModule, SubSidenavComponent],
+  imports: [RouterOutlet, NavbarComponent, MatSidenavModule, SubSidenavComponent, JsonPipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -20,6 +22,7 @@ export class AppComponent {
   currOpenedItem = signal<NavEvent | null>(null);
   private navService = inject<NavService>(NavService);
   sideNav = viewChild<MatSidenav>(MatSidenav);
+  private authService = inject<AuthService>(AuthService);
   
   // TODO: Get the nav items from the nav service
   // TODO: Change the NavEvent type to a better one that might include the title?
