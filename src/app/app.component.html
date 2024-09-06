@@ -1,4 +1,4 @@
-
+<app-spinner></app-spinner>
 <app-navbar (navClick)="sideNavToggle($event)"></app-navbar>
 <mat-sidenav-container class="base-container" (backdropClick)="closeSidenav()">
   <mat-sidenav #sidenav mode="over" [opened]="opened()">
@@ -6,7 +6,7 @@
       <app-sub-sidenav [navItems]="currOpenedItem()?.subItems" [title]="currOpenedItem()?.label" (closeOnSelect)="closeSidenav()"></app-sub-sidenav>
     }
   </mat-sidenav>
-
+  
   <mat-sidenav-content>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

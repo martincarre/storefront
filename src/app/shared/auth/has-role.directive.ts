@@ -29,10 +29,8 @@ export class HasRoleDirective {
 
   private updateView(): void {
     if (this.requiredRoles().some(role => this.currentUserRoles.includes(role))) {
-      console.log('User has required role.');
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
-      console.log('User does not have required role.');
       this.viewContainer.clear();
     }
   }

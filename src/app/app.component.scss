@@ -20,7 +20,6 @@ mat-sidenav {
   margin-top: 0; /* Adjust this if you have a top navbar */
   width: 20vw; /* % of the viewport width */
   max-width: calc(100vw - 105px); /* Ensures the sidenav never overlaps beyond available space */
-  // opacity: 0.9;
 }
 
 /* Adjust mat-sidenav-content to avoid overlap */
