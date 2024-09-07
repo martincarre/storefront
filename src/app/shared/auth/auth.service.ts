@@ -1,4 +1,5 @@
-import { inject, Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthedUser } from './authed-user.interface';
 import { Router } from '@angular/router';
 import { mockAuthUsers } from '../../user/mock-users';
@@ -9,6 +10,7 @@ import { mockAuthUsers } from '../../user/mock-users';
 export class AuthService {
   private router = inject(Router);
   private aUser = signal<AuthedUser | null>(null);
+  private _snackbar = inject(MatSnackBar);
   authedUser = this.aUser.asReadonly();
 
   signup(signupData: any) {
@@ -32,6 +34,7 @@ export class AuthService {
       return;
     } else {
       this.aUser.set(foundUser);
+      this._snackbar.open(`Login successful! Welcome ${this.aUser()?.name}.`, 'Close', { horizontalPosition: 'center', verticalPosition: 'top', duration: 5000 });
       console.log('Login:', this.aUser());
     }
   }
@@ -39,12 +42,13 @@ export class AuthService {
   logout() {
     this.aUser.set(null);
     this.router.navigate(['/']);
+    this._snackbar.open('Loggout successful! See you later...', 'Close', { horizontalPosition: 'center', verticalPosition: 'top', duration: 5000 });
     console.log('Logout: ', this.aUser());
   }
 
   authedUserHandler(): boolean { 
     if (this.aUser()) {
-      alert('User already signed in. You can\'t perform this action again... Try logging out first.');
+      this._snackbar.open('User already signed in. You can\'t perform this action again... Try logging out first.', 'Close', { horizontalPosition: 'center', verticalPosition: 'top', duration: 5000 });
       this.router.navigate(['/']);
       return true;
     } else {
