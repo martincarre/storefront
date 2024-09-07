@@ -22,7 +22,7 @@ import { SpinnerService } from '../spinner.service';
         left: 0;
         width: 100vw;   /* Full viewport width */
         height: 100vh;  /* Full viewport height */
-        background-color: rgba(0, 0, 0, 0.5); /* Slight transparency */
+        background-color: rgba(255, 255, 255, 0.65); /* Slight transparency */
         display: flex;
         justify-content: center;
         align-items: center;
