@@ -40,3 +40,10 @@
 .spacer { 
   flex: 1 0 auto;
 }
+
+@media (max-width: 768px) {
+  .nav-rail {
+    height: calc(100vh - 64px);
+  }
+}
+

@@ -1,8 +1,10 @@
 <nav class="nav-rail">
     <mat-nav-list>
-        <a class="brand" routerLink="home">
-            Logo
-        </a>
+        @if (!mobileView()) {
+            <a class="brand" routerLink="home">
+                Logo
+            </a>
+        }
         @for (navItem of navTopItems; track navItem.tooltip) {
             <app-nav-item 
             [navItem]="navItem"

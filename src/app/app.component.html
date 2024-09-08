@@ -1,13 +1,43 @@
 <app-spinner></app-spinner>
-<app-navbar (navClick)="sideNavToggle($event)"></app-navbar>
-<mat-sidenav-container class="base-container" (backdropClick)="closeSidenav()">
-  <mat-sidenav #sidenav mode="over" [opened]="opened()">
+
+
+
+<!-- Full navbar (hidden on mobile) -->  
+@if (navBarOpened()) {
+  <app-navbar 
+  [mobileView]="mobileView" 
+  (navClick)="sideNavToggle($event)"
+  ></app-navbar>
+}
+
+<!-- Sidenav -->
+<mat-sidenav-container 
+  [ngClass]="getContainerClass()" 
+  (backdropClick)="closeSidenav()"
+>
+  <mat-sidenav #sidenav mode="over" [opened]="sideNavOpened()">
     @if (currOpenedItem()?.subItems) {
-      <app-sub-sidenav [navItems]="currOpenedItem()?.subItems" [title]="currOpenedItem()?.label" (closeOnSelect)="closeSidenav()"></app-sub-sidenav>
+      <app-sub-sidenav 
+        [navItems]="currOpenedItem()?.subItems" 
+        [title]="currOpenedItem()?.label" 
+        (closeOnSelect)="closeSidenav()"
+      ></app-sub-sidenav>
     }
   </mat-sidenav>
-  
+
+  <!-- Content -->
   <mat-sidenav-content>
+    <!-- Top bar for mobile view -->
+    <div class="top-bar">
+      <a class="brand">Logo</a>
+      <button style="margin-left: 1rem;" mat-icon-button (click)="toggleNavBar()">
+        @if (navBarOpened()) {
+          <mat-icon>close</mat-icon>
+        } @else {
+          <mat-icon>menu</mat-icon>
+        }
+      </button>
+    </div>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

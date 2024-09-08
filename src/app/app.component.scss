@@ -1,70 +1,62 @@
-/* Make sure the app-navbar is fixed and doesn't take up space in the document flow */
-app-navbar {
+/* Top bar for mobile */
+.top-bar {
+  display: none;
+  justify-content: start;
+  align-items: center;
+  padding: 0 16px;
+  height: 64px;
+  background-color: #ffffff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  z-index: 1001;
   position: fixed;
   top: 0;
   left: 0;
-  width: 105px;
-  height: 100vh;
-  z-index: 1000;
+  right: 0;
+  width: 100%;
 }
 
-/* Adjust the sidenav-container to account for the navbar's width */
+/* Base container for desktop view */
 .base-container {
   margin-left: 105px;
   height: 100vh;
   width: calc(100% - 105px);
 }
 
-/* Ensure that the mat-sidenav is not overlapping with the navbar */  
-mat-sidenav {
-  margin-top: 0; /* Adjust this if you have a top navbar */
-  width: 20vw; /* % of the viewport width */
-  max-width: calc(100vw - 105px); /* Ensures the sidenav never overlaps beyond available space */
-}
-
-/* Adjust mat-sidenav-content to avoid overlap */
-mat-sidenav-content {
-  padding: 20px;
-}
-
-
-h1 {
-  background: linear-gradient(90deg, #dd0031, #ea4c89, #7044af, #0086ff);
-  background-size: 200%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: gradientMove 10s infinite linear;
-}
-
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.container { 
-  padding: 1.65rem;
-}
-
-mat-sidenav-content { 
-  padding: 0;
-}
-
+/* Mobile view adjustments */
 @media (max-width: 768px) {
-  /* Adjust the sidenav width for smaller screens */
-  mat-sidenav {
-    width: 100vw;
-    max-width: calc(100vw - 105px);
+  .top-bar {
+    display: flex;
   }
-  .container { 
-    padding: 0.5rem;
+
+  /* Mobile container when navbar is closed */
+  .mobile-container-nav-closed {
+    margin-left: 0;
+    margin-top: 64px;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* Mobile container when navbar is open */
+  .mobile-container-nav-open {
+    margin-left: 105px;
+    margin-top: 64px;
+    height: 100vh;
+    width: calc(100% - 105px);
+  }
+
+  mat-sidenav {
+    width: 75vw;
+    max-width: 100vw;
+  }
+
+  mat-sidenav-content {
+    padding: 0.65rem;
+    max-height: 95%;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
   }
 }
