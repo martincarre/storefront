@@ -68,16 +68,13 @@ export class AppComponent implements AfterViewInit {
     if (this.sideNavOpened()) {
       this.closeSidenav();
     }
-    console.log('navbar opened?: ', this.navBarOpened());
   }
 
   // Apply dynamic container classes based on mobile view and navbar state
   getContainerClass() {
     if (this.mobileView()) {
-      console.log('mobile view');
       return this.navBarOpened() ? 'mobile-container-nav-open' : 'mobile-container-nav-closed';
     } else {
-      console.log('desktop view');
       return 'base-container';
     }
   }
