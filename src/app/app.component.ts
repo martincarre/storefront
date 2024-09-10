@@ -1,10 +1,10 @@
-import { afterNextRender, afterRender, Component, HostListener, signal, viewChild, ViewEncapsulation } from '@angular/core';
+import { afterNextRender, afterRender, AfterViewInit, Component, HostListener, inject, PLATFORM_ID, signal, viewChild, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/nav/navbar/navbar.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { SubSidenavComponent } from "./shared/nav/sub-sidenav/sub-sidenav.component";
 import { NavEvent } from './shared/nav/navbar/nav-event.item';
-import { JsonPipe, NgClass, NgStyle } from '@angular/common';
+import { isPlatformBrowser, JsonPipe, NgClass, NgStyle } from '@angular/common';
 import { SpinnerComponent } from "./shared/spinner/spinner/spinner.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,8 +27,9 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'storefront';
+  private platformId = inject(PLATFORM_ID);
 
   // Signals for navbar and sidenav state
   navBarOpened = signal<boolean>(false);
@@ -48,17 +49,18 @@ export class AppComponent {
     }
   }
 
-  constructor() {
-    afterNextRender(() => {
-      this.mobileView.set(window.innerWidth <= 768);
-      console.log('mobile view?: ', this.mobileView());
-      if (this.mobileView()) {
-        this.navBarOpened.set(false);
-      } else {
-        this.navBarOpened.set(true);
-      }
-    });
+  ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkMobileView();
+    }
   }
+
+  checkMobileView(): void {
+    const isMobile = window.innerWidth < 768;
+    this.mobileView.set(isMobile);
+    this.navBarOpened.set(!isMobile);  // Toggle navbar based on view
+  }
+
 
   // Toggle navbar visibility
   toggleNavBar() {
