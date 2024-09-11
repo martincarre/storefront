@@ -1352,3 +1352,197 @@ INFO: Websocket client disconnected
 [debug] [2024-09-11T20:29:31.774Z] Sep 11, 2024 10:29:31 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel
 INFO: Connected to new websocket client
  {"metadata":{"emulator":{"name":"firestore"},"message":"Sep 11, 2024 10:29:31 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel\nINFO: Connected to new websocket client\n"}}
+[debug] [2024-09-11T20:32:05.932Z] File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers"}}
+[debug] [2024-09-11T20:32:06.934Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-09-11T20:32:07.412Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.4.0",
+    "firebase-functions": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-09-11T20:32:07.412Z] Building nodejs source
+[debug] [2024-09-11T20:32:07.412Z] Failed to find version of module node: reached end of search path /Users/martincarre/Documents/storefront/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "18" doesn't match your global version "20". Using node@20 from host. 
+[debug] [2024-09-11T20:32:07.412Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-09-11T20:32:07.413Z] Found firebase-functions binary at '/Users/martincarre/Documents/storefront/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8361
+
+[info] {"severity":"INFO","message":"Running on Firebase Emulators"}
+
+[debug] [2024-09-11T20:32:07.714Z] Got response from /__/functions.yaml {"endpoints":{"signup":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"signup"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: signup. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: signup."}}
+[debug] [2024-09-11T20:32:12.722Z] [worker-pool] Shutting down IDLE worker (us-central1-signup) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-signup)"}}
+[debug] [2024-09-11T20:32:12.722Z] [worker-us-central1-signup-861b208d-531c-4580-8cfd-cde44358bb0d]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-signup"},"extension":{},"message":"[worker-us-central1-signup-861b208d-531c-4580-8cfd-cde44358bb0d]: FINISHING"}}
+[debug] [2024-09-11T20:32:12.725Z] [worker-us-central1-signup-861b208d-531c-4580-8cfd-cde44358bb0d]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-signup"},"extension":{},"message":"[worker-us-central1-signup-861b208d-531c-4580-8cfd-cde44358bb0d]: exited"}}
+[debug] [2024-09-11T20:32:12.725Z] [worker-us-central1-signup-861b208d-531c-4580-8cfd-cde44358bb0d]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-signup"},"extension":{},"message":"[worker-us-central1-signup-861b208d-531c-4580-8cfd-cde44358bb0d]: FINISHED"}}
+[debug] [2024-09-11T20:37:19.452Z] File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers"}}
+[debug] [2024-09-11T20:37:20.454Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-09-11T20:37:20.874Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.4.0",
+    "firebase-functions": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-09-11T20:37:20.874Z] Building nodejs source
+[debug] [2024-09-11T20:37:20.874Z] Failed to find version of module node: reached end of search path /Users/martincarre/Documents/storefront/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "18" doesn't match your global version "20". Using node@20 from host. 
+[debug] [2024-09-11T20:37:20.875Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-09-11T20:37:20.875Z] Found firebase-functions binary at '/Users/martincarre/Documents/storefront/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8881
+
+[info] {"severity":"INFO","message":"Running on Firebase Emulators"}
+
+[debug] [2024-09-11T20:37:21.129Z] Got response from /__/functions.yaml {"endpoints":{"signup":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"signup"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: signup. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: signup."}}
+[debug] [2024-09-11T20:43:14.283Z] File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers"}}
+[debug] [2024-09-11T20:43:15.284Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-09-11T20:43:15.679Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.4.0",
+    "firebase-functions": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-09-11T20:43:15.679Z] Building nodejs source
+[debug] [2024-09-11T20:43:15.679Z] Failed to find version of module node: reached end of search path /Users/martincarre/Documents/storefront/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "18" doesn't match your global version "20". Using node@20 from host. 
+[debug] [2024-09-11T20:43:15.679Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-09-11T20:43:15.680Z] Found firebase-functions binary at '/Users/martincarre/Documents/storefront/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8999
+
+[info] {"severity":"INFO","message":"Running on Firebase Emulators"}
+
+[debug] [2024-09-11T20:43:15.945Z] Got response from /__/functions.yaml {"endpoints":{"signup":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"signup"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: signup. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: signup."}}
+[debug] [2024-09-11T20:43:37.596Z] File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers"}}
+[debug] [2024-09-11T20:43:38.598Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-09-11T20:43:38.963Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.4.0",
+    "firebase-functions": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-09-11T20:43:38.963Z] Building nodejs source
+[debug] [2024-09-11T20:43:38.963Z] Failed to find version of module node: reached end of search path /Users/martincarre/Documents/storefront/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "18" doesn't match your global version "20". Using node@20 from host. 
+[debug] [2024-09-11T20:43:38.964Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-09-11T20:43:38.964Z] Found firebase-functions binary at '/Users/martincarre/Documents/storefront/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8976
+
+[info] {"severity":"INFO","message":"Running on Firebase Emulators"}
+
+[debug] [2024-09-11T20:43:39.234Z] Got response from /__/functions.yaml {"endpoints":{"signup":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"signup"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: signup. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: signup."}}
+[debug] [2024-09-11T20:43:45.031Z] File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/martincarre/Documents/storefront/functions/index.js changed, reloading triggers"}}
+[debug] [2024-09-11T20:43:46.033Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-09-11T20:43:46.349Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.4.0",
+    "firebase-functions": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-09-11T20:43:46.349Z] Building nodejs source
+[debug] [2024-09-11T20:43:46.349Z] Failed to find version of module node: reached end of search path /Users/martincarre/Documents/storefront/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "18" doesn't match your global version "20". Using node@20 from host. 
+[debug] [2024-09-11T20:43:46.349Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-09-11T20:43:46.350Z] Found firebase-functions binary at '/Users/martincarre/Documents/storefront/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8324
+
+[info] {"severity":"INFO","message":"Running on Firebase Emulators"}
+
+[debug] [2024-09-11T20:43:46.516Z] Got response from /__/functions.yaml {"endpoints":{"signup":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"signup"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: signup. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: signup."}}
