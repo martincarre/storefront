@@ -1,11 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
 import { initializeApp, FirebaseApp } from 'firebase/app';
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, User, UserCredential, signOut, Auth, connectAuthEmulator } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, User, UserCredential, signOut, Auth, connectAuthEmulator } from 'firebase/auth';
 
 import { environment } from '../../../environments/environment';
 import { AuthedUser } from './authed-user.interface';
 import { UserRole } from './user-role.interface';
+import { SpinnerService } from '../spinner/spinner.service';
 
 interface SignupInfo { 
   email: string;
@@ -26,6 +27,7 @@ export class AuthService {
   private app: FirebaseApp | null = null;
   private auth: Auth | null = null;
   private platformId = inject(PLATFORM_ID);
+  private spinner = inject<SpinnerService>(SpinnerService);
 
   private aUser = signal<AuthedUser | null>(null);
   authedUser = this.aUser.asReadonly();
@@ -73,25 +75,32 @@ export class AuthService {
     this.aUser.set(null);
   }
 
-  signup(signupData: SignupInfo) {
-    if (this.auth) {
-      createUserWithEmailAndPassword(this.auth, signupData.email, signupData.password)
-        .then((userCredential: UserCredential) => {
-          const resUser: User = userCredential.user;
-          const resAuthedUser: AuthedUser = { 
-            email: resUser.email ? resUser.email : 'Anonymous',
-            name: resUser.displayName ? resUser.displayName : 'Anonymous',
-            isVerified: resUser.emailVerified,
-            roles: [UserRole.Admin]
-          }
-          this.aUser.set(resAuthedUser);
-          console.log('User:', this.aUser());
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+  async signup(signupData: SignupInfo): Promise<Response> {
+    let apiUri: string = '';
+    this.spinner.show();
+    console.log('Signup Data:', signupData);
+    if (environment.useEmulators) {
+      apiUri = environment.emulators.functions.url + '/signup';
+    } else { 
+      apiUri = ''; // TODO: Add production URL
+    }
+    console.log('API URI:', apiUri);
+    const response: Response = await fetch(apiUri, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(signupData)
+    });
+    console.log('Response received');
+    this.spinner.hide();
+    if (response.status === 201) {
+      console.log('Success', response); 
+      return response;
     } else {
-      this.firebaseInitError();
+      console.error('Error:', response);
+      return response;
+      // TODO: ERROR HANDLING
     }
   }
 
