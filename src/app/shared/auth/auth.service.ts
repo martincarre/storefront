@@ -1,32 +1,21 @@
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { signInWithEmailAndPassword, User, UserCredential, signOut, Auth } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut, Auth, setPersistence, browserLocalPersistence, onAuthStateChanged, User } from 'firebase/auth';
 
 import { environment } from '../../../environments/environment';
 import { AuthedUser } from './authed-user.interface';
 import { UserRole } from './user-role.interface';
+import { SignupInfo } from './signup.interface';
 import { SpinnerService } from '../spinner/spinner.service';
 import { FirebaseService } from '../firebase.service';
 import { Router } from '@angular/router';
-
-interface SignupInfo { 
-  email: string;
-  password: string;
-  confirmPassword: string;
-  name: string;
-  role: string;
-  useCase: string;
-  businessWebsite: string;
-  businessName: string;
-  businessType: string;
-}
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   // First setting the firebase and platformId to check if the platform is browser and we've initialized Auth
-  // TODO: Maybe will have to test for the platformId later on? I'm not sure if it's necessary... 
-  // private platformId = inject(PLATFORM_ID);
+  private platformId = inject(PLATFORM_ID);
   private firebaseService = inject<FirebaseService>(FirebaseService);
   // Then the spinner and router that we'll need
   private spinner = inject<SpinnerService>(SpinnerService);
@@ -37,45 +26,39 @@ export class AuthService {
   authedUser = this.aUser.asReadonly();
 
   constructor() {
-    if (this.firebaseService.auth) {
+    if (this.firebaseService.auth && isPlatformBrowser(this.platformId)) {
       this.auth = this.firebaseService.auth;
+      setPersistence(this.auth, browserLocalPersistence);
+      onAuthStateChanged(this.auth, async (user) => {
+        if (user) {
+          this.aUser.set(await this.fromAuthToUser(user));
+          console.log('User:', this.aUser());
+        }
+      });
     }
+  }
+
+  async fromAuthToUser(authUser: User): Promise<AuthedUser> {
+    const fetchedUser = await authUser.getIdTokenResult().then((idTokenResult) => {
+      return idTokenResult.claims;
+    });
+    return { 
+      uid: authUser.uid,
+      email: fetchedUser['email'] as string,
+      name: fetchedUser['name'] as string,
+      isVerified: fetchedUser['email_verified'] as boolean,
+      roles: [(fetchedUser['role'] as string) as UserRole], // TODO: Create the possibility for users ot have multiples roles. At the moement, creating the array here is a hack to keep future functionality in mind.
+    };
   }
 
   // TODO: Here we need to check if the user is verified before logging them in - Write a shared function for signup and login
   login(email: string, password: string) {
     this.spinner.show();
-
     signInWithEmailAndPassword(this.auth!, email, password)
-      .then(async (userCredential: UserCredential) => {
-        if (userCredential.user) {
-          // Getting the user's details and roles:
-          const fetchedUser = await userCredential.user.getIdTokenResult().then((idTokenResult) => {
-            return idTokenResult.claims;
-          });
-
-          const resAuthedUser: AuthedUser = { 
-            uid: userCredential.user.uid,
-            email: fetchedUser['email'] as string,
-            name: fetchedUser['name'] as string,
-            isVerified: fetchedUser['email_verified'] as boolean,
-            roles: [(fetchedUser['role'] as string) as UserRole], // TODO: Create the possibility for users ot have multiples roles. At the moement, creating the array here is a hack to keep future functionality in mind.
-          }
-          this.aUser.set(resAuthedUser);
-          this.spinner.hide();
-          console.log('User:', this.aUser());
-          // TODO: Navigate to the dashboard page
-        }
-          else {
-          console.warn('User credential or user object is missing');
-          this.spinner.hide(); // Ensure spinner is hidden in case of missing user
-          // Optionally, show a user-facing error message
-        }
-      })
+      .then(() => this.spinner.hide())
       .catch((error) => {
-        console.error('Error during login:', error);
-        this.spinner.hide(); // Ensure spinner is hidden in case of error
-        // Optionally, show a user-facing error message, e.g., snackbar or alert
+        console.error('Error:', error);
+        this.spinner.hide();
       });
   }
 
