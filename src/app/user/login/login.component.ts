@@ -5,7 +5,6 @@ import { StyleSection } from '../../shared/forms/dynamic-forms/question-classes/
 import { UserModule } from '../user.module';
 import { LoginFormService } from './login-form.service';
 import { FormGroup } from '@angular/forms';
-import { UserService } from '../user.service';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/auth/auth.service';

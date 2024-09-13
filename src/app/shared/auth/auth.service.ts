@@ -1,12 +1,12 @@
-import { isPlatformBrowser } from '@angular/common';
-import { initializeApp, FirebaseApp } from 'firebase/app';
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { getAuth, signInWithEmailAndPassword, User, UserCredential, signOut, Auth, connectAuthEmulator } from 'firebase/auth';
+import { signInWithEmailAndPassword, User, UserCredential, signOut, Auth } from 'firebase/auth';
 
 import { environment } from '../../../environments/environment';
 import { AuthedUser } from './authed-user.interface';
 import { UserRole } from './user-role.interface';
 import { SpinnerService } from '../spinner/spinner.service';
+import { FirebaseService } from '../firebase.service';
+import { Router } from '@angular/router';
 
 interface SignupInfo { 
   email: string;
@@ -24,55 +24,67 @@ interface SignupInfo {
   providedIn: 'root'
 })
 export class AuthService {
-  private app: FirebaseApp | null = null;
-  private auth: Auth | null = null;
-  private platformId = inject(PLATFORM_ID);
+  // First setting the firebase and platformId to check if the platform is browser and we've initialized Auth
+  // TODO: Maybe will have to test for the platformId later on? I'm not sure if it's necessary... 
+  // private platformId = inject(PLATFORM_ID);
+  private firebaseService = inject<FirebaseService>(FirebaseService);
+  // Then the spinner and router that we'll need
   private spinner = inject<SpinnerService>(SpinnerService);
-
+  private router = inject<Router>(Router);
+  // Setup the private vars
+  private auth: Auth | null = null;
   private aUser = signal<AuthedUser | null>(null);
   authedUser = this.aUser.asReadonly();
 
   constructor() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.app = initializeApp(environment.firebaseConfig);
-      this.auth = getAuth(this.app);
-    }
-    if (environment.useEmulators && this.auth) {
-      connectAuthEmulator(this.auth, environment.emulators.auth.url!); // Forcing non-null assertion because I know I'm in dev mode and not using the prod env file.
-      console.log('Connected to Firebase Auth Emulator');
-    } else {
-      console.log('Using production Firebase Auth');
-    }
-    if (!this.app) {
-      console.error('Firebase app not initialized');
+    if (this.firebaseService.auth) {
+      this.auth = this.firebaseService.auth;
     }
   }
 
+  // TODO: Here we need to check if the user is verified before logging them in - Write a shared function for signup and login
   login(email: string, password: string) {
+    this.spinner.show();
+
     signInWithEmailAndPassword(this.auth!, email, password)
-      .then((userCredential: UserCredential) => {
-        if (!userCredential.user) {
-          console.error('No user found');
-        } else if (userCredential.user) {
-          const resUser: User = userCredential.user;
+      .then(async (userCredential: UserCredential) => {
+        if (userCredential.user) {
+          // Getting the user's details and roles:
+          const fetchedUser = await userCredential.user.getIdTokenResult().then((idTokenResult) => {
+            return idTokenResult.claims;
+          });
+
           const resAuthedUser: AuthedUser = { 
-            email: resUser.email ? resUser.email : 'Anonymous',
-            name: resUser.displayName ? resUser.displayName : 'Anonymous',
-            isVerified: resUser.emailVerified,
-            roles: [UserRole.Admin]
+            uid: userCredential.user.uid,
+            email: fetchedUser['email'] as string,
+            name: fetchedUser['name'] as string,
+            isVerified: fetchedUser['email_verified'] as boolean,
+            roles: [(fetchedUser['role'] as string) as UserRole], // TODO: Create the possibility for users ot have multiples roles. At the moement, creating the array here is a hack to keep future functionality in mind.
           }
           this.aUser.set(resAuthedUser);
+          this.spinner.hide();
           console.log('User:', this.aUser());
+          // TODO: Navigate to the dashboard page
+        }
+          else {
+          console.warn('User credential or user object is missing');
+          this.spinner.hide(); // Ensure spinner is hidden in case of missing user
+          // Optionally, show a user-facing error message
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.error('Error during login:', error);
+        this.spinner.hide(); // Ensure spinner is hidden in case of error
+        // Optionally, show a user-facing error message, e.g., snackbar or alert
       });
   }
 
+  // TODO: Finish handling the logout function: We need to check the email verification status of the user before logging them out
   logout(): void {
     this.auth ? signOut(this.auth) : this.firebaseInitError();
     this.aUser.set(null);
+    // TODO make sure we nagivate to the index page
+    this.router.navigate(['/']);
   }
 
   async signup(signupData: SignupInfo): Promise<Response> {
