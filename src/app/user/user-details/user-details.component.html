@@ -1,4 +1,3 @@
-<p>{{ currUserData() | json }}</p>
 <div class="container">
     @if(currUserData()) {
         <mat-card class="center-card-container">
@@ -9,7 +8,7 @@
             </mat-card-header>
                 <app-dynamic-form [questions]="questions$ | async" (submitEvent)="onSave($event)">
                     <mat-card-actions>
-                        <button mat-fab extended color="primary" type="submit">Login</button>
+                        <button mat-fab extended color="primary" type="submit">Save</button>
                     </mat-card-actions>
                 </app-dynamic-form>
         </mat-card>

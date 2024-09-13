@@ -8,7 +8,7 @@ import { StyleSection } from '../../shared/forms/dynamic-forms/question-classes/
   providedIn: 'root'
 })
 export class LoginFormService {
-
+  
   getQuestions(): Observable<(QuestionBase<string> | StyleSection<any>)[]> {
     const questions: (QuestionBase<string> | StyleSection<any>)[] = [ 
       new TextboxQuestion({
