@@ -18,7 +18,7 @@ export class UserDetailsComponent {
   private userService = inject<UserService>(UserService);
   private udfs = inject<UserDetailsFormService>(UserDetailsFormService);
   currUserData = this.userService.userData;
-  questions$ = this.udfs.getQuestions();
+  questions = this.udfs.form;
 
   constructor() {
   }

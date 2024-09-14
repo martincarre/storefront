@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 export class UserDetailsFormService {
   private formQuestions = signal<(QuestionBase<string> | StyleSection<any>)[]>([]);
   private userService = inject<UserService>(UserService);
+  form = this.formQuestions.asReadonly();
 
   constructor() {
     effect(() => {

@@ -7,7 +7,7 @@
                     <h1>{{ currUserData().name }}</h1>
                 </mat-card-title>
             </mat-card-header>
-                <app-dynamic-form [questions]="questions$ | async" (submitEvent)="onSave($event)">
+                <app-dynamic-form [questions]="questions()" (submitEvent)="onSave($event)">
                     <mat-card-actions>
                         <button mat-fab extended color="primary" type="submit">Save</button>
                     </mat-card-actions>
