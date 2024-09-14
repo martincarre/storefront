@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { UserService } from '../user.service';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { DynamicFormComponent } from '../../shared/forms/dynamic-forms/dynamic-form/dynamic-form.component';
@@ -20,7 +20,13 @@ export class UserDetailsComponent {
   currUserData = this.userService.userData;
   questions$ = this.udfs.getQuestions();
 
+  constructor() {
+  }
+
   onSave($event: any) {
-    console.log($event);
+    if ($event.untouched) {
+      alert('Please fill out the form');
+    }
+    console.log($event.value);
   }
 } 

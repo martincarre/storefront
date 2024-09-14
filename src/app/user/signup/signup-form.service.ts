@@ -9,7 +9,7 @@ import { StyleSection } from '../../shared/forms/dynamic-forms/question-classes/
   providedIn: 'root'
 })
 export class SignupFormService {
-
+  
   getQuestions() {
     const questions: (QuestionBase<string> | StyleSection<any>)[] = [ 
       new StyleSection({

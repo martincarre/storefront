@@ -5,7 +5,7 @@
                     <mat-form-field [appearance]="question().materialCss">
                         <mat-label [attr.for]="question().key">{{ question().label }}</mat-label>
                         @if(question().prefix) {<mat-icon matPrefix>{{ question().prefix }}</mat-icon>}
-                        <input matInput [formControlName]="question().key" [id]="question().key" [type]="question().type" />
+                        <input matInput [formControlName]="question().key" [id]="question().key" [type]="question().type"  [value]="question().value"/>
                         @if (question().suffix) {<mat-icon matSuffix>{{ question().suffix }}</mat-icon>}
                     </mat-form-field>
                 </ng-container>
@@ -13,7 +13,7 @@
             @case ('dropdown') {
                 <mat-form-field [appearance]="question().materialCss">
                     <mat-label [attr.for]="question().key">{{ question().label }}</mat-label>
-                    <mat-select [id]="question().key" [formControlName]="question().key">
+                    <mat-select [id]="question().key" [formControlName]="question().key" [value]="question().value">
                     @for (opt of question().options; track opt) {
                         <mat-option [value]="opt.key">{{ opt.value }}</mat-option>
                     }
