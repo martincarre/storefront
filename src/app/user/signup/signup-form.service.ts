@@ -15,7 +15,7 @@ export class SignupFormService {
   constructor() { 
     this.setQuestions();
   }
-
+// TODO: Create a unified form service for all forms and get the questions from the backend - firestore
 private setQuestions(): void {
     const questions: (QuestionBase<string> | StyleSection<any>)[] = [ 
       new StyleSection({
