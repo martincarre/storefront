@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { QuestionBase } from '../../shared/forms/dynamic-forms/question-classes/question-base.class';
 import { of } from 'rxjs';
 import { DropdownQuestion } from '../../shared/forms/dynamic-forms/question-classes/question-dropdown.class';
@@ -9,8 +9,14 @@ import { StyleSection } from '../../shared/forms/dynamic-forms/question-classes/
   providedIn: 'root'
 })
 export class SignupFormService {
-  
-  getQuestions() {
+  private questionsToForm = signal<(QuestionBase<string> | StyleSection<any>)[]>([]);
+  form = this.questionsToForm.asReadonly();
+
+  constructor() { 
+    this.setQuestions();
+  }
+
+private setQuestions(): void {
     const questions: (QuestionBase<string> | StyleSection<any>)[] = [ 
       new StyleSection({
         order: 1,
@@ -126,6 +132,6 @@ export class SignupFormService {
         materialCss: 'outline',
       }),
     ]
-    return of(questions.sort((a, b) => a.order - b.order));
+    this.questionsToForm.set(questions.sort((a, b) => a.order - b.order));
   }
 }
