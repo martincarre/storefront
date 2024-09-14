@@ -20,9 +20,6 @@ export class UserDetailsComponent {
   currUserData = this.userService.userData;
   questions = this.udfs.form;
 
-  constructor() {
-  }
-
   onSave($event: any) {
     if ($event.untouched) {
       alert('Please fill out the form');

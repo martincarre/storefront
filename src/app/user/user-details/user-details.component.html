@@ -7,9 +7,15 @@
                     <h1>{{ currUserData().name }}</h1>
                 </mat-card-title>
             </mat-card-header>
-                <app-dynamic-form [questions]="questions()" (submitEvent)="onSave($event)">
+                <app-dynamic-form #form [questions]="questions()" (submitEvent)="onSave($event)">
                     <mat-card-actions>
-                        <button mat-fab extended color="primary" type="submit">Save</button>
+                        <button 
+                        mat-fab 
+                        extended 
+                        color="primary" 
+                        type="submit"
+                        [disabled]="!form.form.valid || form.form.pristine"
+                        >Save</button>
                     </mat-card-actions>
                 </app-dynamic-form>
         </mat-card>
