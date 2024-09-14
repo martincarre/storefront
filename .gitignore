@@ -45,3 +45,9 @@ Thumbs.db
 .env
 env/
 env.js
+environments/
+
+*-debug.log
+firebase-debug.log
+firestore-debug.log
+ui-debug.log

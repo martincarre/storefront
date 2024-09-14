@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { QuestionBase } from '../../shared/forms/dynamic-forms/question-classes/question-base.class';
 import { Observable, of } from 'rxjs';
 import { TextboxQuestion } from '../../shared/forms/dynamic-forms/question-classes/question-textbox.class';
@@ -8,8 +8,14 @@ import { StyleSection } from '../../shared/forms/dynamic-forms/question-classes/
   providedIn: 'root'
 })
 export class LoginFormService {
+  private questionsToForm = signal<(QuestionBase<string> | StyleSection<any>)[]>([]);
+  form = this.questionsToForm.asReadonly();
 
-  getQuestions(): Observable<(QuestionBase<string> | StyleSection<any>)[]> {
+  constructor() { 
+    this.setQuestions();
+  }
+
+  private setQuestions(): void {
     const questions: (QuestionBase<string> | StyleSection<any>)[] = [ 
       new TextboxQuestion({
         key: 'email',
@@ -30,6 +36,6 @@ export class LoginFormService {
         suffix: 'password'
       }),
     ]
-    return of(questions);
+    this.questionsToForm.set(questions); 
   }
 }

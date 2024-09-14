@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QuestionBase } from '../../shared/forms/dynamic-forms/question-classes/question-base.class';
 import { StyleSection } from '../../shared/forms/dynamic-forms/question-classes/form-style-section.class';
 import { UserModule } from '../user.module';
 import { LoginFormService } from './login-form.service';
 import { FormGroup } from '@angular/forms';
-import { UserService } from '../user.service';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/auth/auth.service';
@@ -22,9 +21,9 @@ export class LoginComponent {
   lfs = inject<LoginFormService>(LoginFormService);
   private authService = inject<AuthService>(AuthService);
 
-  questions$: Observable<(QuestionBase<string> | StyleSection<any> )[]>;
+  questions: Signal<(QuestionBase<string> | StyleSection<any> )[]>;
   constructor() { 
-    this.questions$ = this.lfs.getQuestions();
+    this.questions = this.lfs.form;
   }
 
   onLogin($event: FormGroup) {

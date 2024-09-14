@@ -1,32 +1,44 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop'
 import { QuestionBase } from '../../shared/forms/dynamic-forms/question-classes/question-base.class';
-import { of } from 'rxjs';
-import { DropdownQuestion } from '../../shared/forms/dynamic-forms/question-classes/question-dropdown.class';
-import { TextboxQuestion } from '../../shared/forms/dynamic-forms/question-classes/question-textbox.class';
 import { StyleSection } from '../../shared/forms/dynamic-forms/question-classes/form-style-section.class';
+import { TextboxQuestion } from '../../shared/forms/dynamic-forms/question-classes/question-textbox.class';
+import { DropdownQuestion } from '../../shared/forms/dynamic-forms/question-classes/question-dropdown.class';
+import { UserService } from '../user.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SignupFormService {
-  private questionsToForm = signal<(QuestionBase<string> | StyleSection<any>)[]>([]);
-  form = this.questionsToForm.asReadonly();
+export class UserDetailsFormService {
+  private formQuestions = signal<(QuestionBase<string> | StyleSection<any>)[]>([]);
+  private userService = inject<UserService>(UserService);
+  form = this.formQuestions.asReadonly();
 
-  constructor() { 
-    this.setQuestions();
+  constructor() {
+    effect(() => {
+      const userData = this.userService.userData();
+      if (userData) {
+        this.setupQuestions();
+      }
+    }, { allowSignalWrites: true });
   }
-// TODO: Create a unified form service for all forms and get the questions from the backend - firestore
-private setQuestions(): void {
+
+  getQuestions(): Observable<(QuestionBase<string>| StyleSection<any>)[]> {
+    return toObservable(this.formQuestions);
+  }
+
+  private setupQuestions() {
     const questions: (QuestionBase<string> | StyleSection<any>)[] = [ 
       new StyleSection({
         order: 1,
-        content: 'So that we get to know you better',
         title: 'Personal Information',
         divider: true,
       }),
       new DropdownQuestion({
         key: 'role',
         label: 'Role',
+        value: this.userService.userData().role,
         options: [
           { value: 'C-suite', key: 'csuite' },
           { value: 'Sales', key: 'sales' },
@@ -43,6 +55,7 @@ private setQuestions(): void {
       new TextboxQuestion({ 
         key: 'name',
         label: 'Name',
+        value: this.userService.userData().name,
         materialCss: 'outline',
         // required: true,
         order: 3,
@@ -52,42 +65,21 @@ private setQuestions(): void {
         key: 'email',
         label: 'Email',
         type: 'email',
+        value: this.userService.userData().email,
         materialCss: 'outline',
         // required: true,
         order: 3,
         suffix: 'email',
       }),
       new StyleSection({
-        order: 4,
-        content: 'Define a password for your account',
-      }),
-      new TextboxQuestion({
-        key: 'password',
-        label: 'Password',
-        type: 'password',
-        materialCss: 'outline',
-        // required: true,
-        order: 5,
-        suffix: 'password'
-      }),
-      new TextboxQuestion({
-        key: 'confirmPassword',
-        label: 'Confirm Password',
-        type: 'password',
-        materialCss: 'outline',
-        // required: true,
-        order: 6,
-        suffix: 'password'
-      }),
-      new StyleSection({
         order: 7,
-        content: 'Tell us about your business',
         title: 'Business Information',
         divider: true
       }),
       new DropdownQuestion({
         key: 'businessType',
         label: 'Business Type',
+        value: this.userService.userData().businessType,
         options: [
           { value: 'B2B', key: 'b2b' },
           { value: 'B2C', key: 'b2c' },
@@ -102,6 +94,7 @@ private setQuestions(): void {
       new TextboxQuestion({
         key: 'businessName',
         label: 'Business Name',
+        value: this.userService.userData().businessName,
         order: 9,
         // required: true,
         materialCss: 'outline',
@@ -110,6 +103,7 @@ private setQuestions(): void {
       new TextboxQuestion({
         key: 'businessWebsite',
         label: 'Business Website',
+        value: this.userService.userData().businessWebsite,
         order: 10,
         materialCss: 'outline',
         suffix: 'language'
@@ -121,6 +115,7 @@ private setQuestions(): void {
       new DropdownQuestion({
         key: 'useCase',
         label: 'Use Case',
+        value: this.userService.userData().useCase,
         options: [
           { value: 'To find new customers', key: 'new_customers' },
           { value: 'To know about my competition', key: 'competition' },
@@ -132,6 +127,6 @@ private setQuestions(): void {
         materialCss: 'outline',
       }),
     ]
-    this.questionsToForm.set(questions.sort((a, b) => a.order - b.order));
+    this.formQuestions.set(questions.sort((a, b) => a.order - b.order));
   }
 }

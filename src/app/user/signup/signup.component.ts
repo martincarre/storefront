@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { SignupFormService } from './signup-form.service';
 import { QuestionBase } from '../../shared/forms/dynamic-forms/question-classes/question-base.class';
 import { Observable } from 'rxjs';
@@ -22,10 +22,10 @@ import { AuthService } from '../../shared/auth/auth.service';
 export class SignupComponent {
   sufs = inject<SignupFormService>(SignupFormService);
   authService = inject<AuthService>(AuthService);
-  questions$: Observable<(QuestionBase<string> | StyleSection<any> )[]>;
+  questions: Signal<(QuestionBase<string> | StyleSection<any> )[]>;
 
   constructor() { 
-    this.questions$ = this.sufs.getQuestions();
+    this.questions = this.sufs.form;
   }
 
   onSubmit($event: any) {

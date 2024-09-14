@@ -5,12 +5,11 @@
                 <h1>Login</h1>
             </mat-card-title>
         </mat-card-header>
-            <app-dynamic-form [questions]="questions$ | async" (submitEvent)="onLogin($event)">
+            <app-dynamic-form #form [questions]="questions()" (submitEvent)="onLogin($event)">
                 <span class="signup">Don't have an account? Sign up <a routerLink="/user/signup">here</a></span>
                 <mat-card-actions>
-                    <button mat-fab extended color="primary" type="submit">Login</button>
+                    <button mat-fab extended color="primary" type="submit" [disabled]="!form.form.valid">Login</button>
                 </mat-card-actions>
             </app-dynamic-form>
     </mat-card>
 </div>
-

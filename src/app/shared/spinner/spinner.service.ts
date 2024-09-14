@@ -9,13 +9,11 @@ export class SpinnerService {
 
   // Show the spinner
   show() {
-    console.log('show spinner');
     this.isActive.set(true);
   }
 
   // Hide the spinner
   hide() {
-    console.log('hide spinner');
     this.isActive.set(false);
   }
 }
