@@ -12,7 +12,7 @@ export class BlogService {
       title: "Exploring the Future of AI: Trends and Predictions",
       description: "A comprehensive look into the upcoming trends in artificial intelligence and how it will shape the world in the next decade.",
       date: new Date(2024, 8, 12),
-      imageUrl: "https://example.com/images/ai-future.jpg",
+      imageUrl: "/blog-test.jpg",
       id: "1",
       author: "Jane Doe"
     },

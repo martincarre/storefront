@@ -1,7 +1,15 @@
-<div class="blog-list">
-    @for (blog of blogs(); track blog.id) {
-        <app-blog-thumbnail [blog]="blog"></app-blog-thumbnail>
-    }
+<mat-paginator
+    [length]="blogsLength"
+    [pageSizeOptions]="[6, 10, 20]"
+    [pageSize]="pageSize"
+    [showFirstLastButtons]="true"
+    (page)="onPageChange($event)"
+>
+</mat-paginator>
+    <div class="blog-list">
+        @for (blog of paginatedBlogs(); track blog.id) {
+            <app-blog-thumbnail [blog]="blog"></app-blog-thumbnail>
+        }
 </div>
 
 <app-new-blog></app-new-blog>

@@ -17,7 +17,6 @@ export class BlogThumbnailComponent {
   showFallback = false;
 
   imageError() {
-    console.log('Image error: True');
     this.showFallback = true;
   }
 }
