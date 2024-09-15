@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { SignupFormService } from './signup-form.service';
 import { QuestionBase } from '../../shared/forms/dynamic-forms/question-classes/question-base.class';
-import { Observable } from 'rxjs';
 import { StyleSection } from '../../shared/forms/dynamic-forms/question-classes/form-style-section.class';
 import { UserModule } from '../user.module';
 import { MatButtonModule } from '@angular/material/button';
-import { UserService } from '../user.service';
 import { FormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/auth/auth.service';
