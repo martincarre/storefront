@@ -1,0 +1,7 @@
+<div class="blog-list">
+    @for (blog of blogs(); track blog.id) {
+        <app-blog-thumbnail [blog]="blog"></app-blog-thumbnail>
+    }
+</div>
+
+<app-new-blog></app-new-blog>

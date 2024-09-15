@@ -5,7 +5,7 @@
                 Logo
             </a>
         }
-        @for (navItem of navTopItems; track navItem.tooltip) {
+        @for (navItem of navTopItems(); track navItem.tooltip) {
             <app-nav-item 
             [navItem]="navItem"
             (mouseenter)="toggleSidenav('hover', navItem)"
@@ -15,7 +15,7 @@
     </mat-nav-list>
     <div class="spacer"></div>
     <mat-nav-list class="bottom-nav">
-        @for (bottomNavItem of navBottomItems; track bottomNavItem.tooltip) {
+        @for (bottomNavItem of navBottomItems(); track bottomNavItem.tooltip) {
             <app-nav-item 
             [navItem]="bottomNavItem"
             (mouseenter)="toggleSidenav('hover', bottomNavItem)"

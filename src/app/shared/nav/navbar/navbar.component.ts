@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, output, Signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, inject, input, output, signal, Signal } from '@angular/core';
 import {  RouterLink } from '@angular/router';
 import { NavItemComponent } from './nav-item/nav-item.component';
 import { NavModule } from '../nav.module';
@@ -20,9 +20,9 @@ export class NavbarComponent {
   navClick = output<NavEvent>();
   private navService = inject<NavService>(NavService);
   mobileView = input.required<Signal<boolean>>();
-  navBottomItems = this.navService.getNavBottomItems();
-  navTopItems = this.navService.getNavTopItems();
-  
+  navBottomItems: Signal<NavItem[]> = this.navService.navBottomItems;
+  navTopItems: Signal<NavItem[]> = this.navService.navTopItems;
+
   toggleSidenav(inputType: string, navItem: NavItem) {
     const navEvent: NavEvent = {
       type: inputType,
@@ -32,6 +32,5 @@ export class NavbarComponent {
     }
     this.navClick.emit(navEvent);
   }
-
 
 }

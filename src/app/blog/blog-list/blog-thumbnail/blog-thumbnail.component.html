@@ -1,0 +1,18 @@
+<mat-card class="blog-card" (mouseenter)="hover = true" (mouseleave)="hover = false">
+    <div class="image-container">
+      <img [src]="blog().imageUrl" alt="{{blog().title}}" (error)="imageError()" />
+      @if (showFallback) {
+          <div class="image-fallback"></div>
+      }
+    </div>
+  
+    <mat-card-content>
+      <h6>{{ blog().title }}</h6>
+      <p>{{ blog().description }}</p>
+    </mat-card-content>
+  
+    <mat-card-footer>
+      <span class="author">{{ blog().author }}</span>
+      <span class="date">{{ blog().date | date: 'longDate' }}</span>
+    </mat-card-footer>
+  </mat-card>

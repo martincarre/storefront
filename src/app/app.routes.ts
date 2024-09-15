@@ -12,6 +12,10 @@ export const routes: Routes = [
         title: 'Maps Business Searcher',
     },
     {
+        path: 'news',
+        loadComponent: () => import("./blog/blog-list/blog-list.component").then(c => c.BlogListComponent),
+    },
+    {
         path: 'user',
         children: [
             {

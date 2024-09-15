@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { NavItem } from './navbar/nav-item/nav-item.model';
 import { AuthService } from '../auth/auth.service';
 import { UserRole } from '../auth/user-role.interface';
@@ -8,7 +8,7 @@ import { UserRole } from '../auth/user-role.interface';
 })
 export class NavService {
   private authService = inject<AuthService>(AuthService);
-  readonly navTopItems = signal<NavItem[]>([
+  private navTopItemsInit = signal<NavItem[]>([
     {
       tooltip: 'Home',
       icon: 'home',
@@ -61,10 +61,15 @@ export class NavService {
         },
       ],
       requiredRoles: [UserRole.Admin, UserRole.User, UserRole.Moderator],
+    },
+    {
+      tooltip: 'News',
+      icon: 'article',
+      route: 'news',
+      requiredRoles: [UserRole.Guest, UserRole.User]
     }
   ]);
-
-  readonly navBottomItems = signal<NavItem[]>([
+  private navBottomItemsInit = signal<NavItem[]>([
     {
       tooltip: 'Pricing',
       icon: 'sell',
@@ -102,12 +107,7 @@ export class NavService {
     }
   ]);
 
-  getNavBottomItems(): NavItem[] {
-    return this.navBottomItems();
-  };
-
-  getNavTopItems(): NavItem[] {
-    return this.navTopItems();
-  }
+  navBottomItems = this.navBottomItemsInit.asReadonly();
+  navTopItems = this.navTopItemsInit.asReadonly();
 
 }

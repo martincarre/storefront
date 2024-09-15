@@ -1,0 +1,27 @@
+.blog-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem; /* Gap between blog thumbnails */
+    padding: 0.65rem; /* Padding for the whole list */
+    justify-content: space-between;
+    align-items: stretch; /* Ensure all thumbnails stretch to the same height */
+  
+    /* For desktop view (default) */
+    app-blog-thumbnail {
+      flex: 1 1 30%; /* Each blog-thumbnail will take 30% width */
+      max-width: 30%;
+      display: flex;
+      flex-direction: column; /* Allows thumbnail content to stretch with the available height */
+    }
+  
+    /* For mobile view */
+    @media (max-width: 768px) {
+      padding: 0.65rem; /* Smaller padding on mobile */
+      gap: 1rem; /* Smaller gap between blog thumbnails */
+  
+      app-blog-thumbnail {
+        flex: 1 1 100%; /* Make each blog-thumbnail take full width */
+        max-width: 100%;
+      }
+    }
+  }

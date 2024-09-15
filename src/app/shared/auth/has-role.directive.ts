@@ -1,4 +1,4 @@
-import { Directive, effect, inject, input, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { afterNextRender, Directive, effect, inject, input, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AuthService } from './auth.service';
 import { UserRole } from './user-role.interface';
 import { AuthedUser } from './authed-user.interface';
@@ -11,6 +11,7 @@ export class HasRoleDirective {
   private authService = inject(AuthService);
   private templateRef = inject(TemplateRef);
   private viewContainer = inject(ViewContainerRef);
+  private isViewRendered = false;
 
   private currentUserRoles: UserRole[] = [];
   requiredRoles = input.required<UserRole[]>({ alias: 'appHasRole' });
@@ -28,10 +29,18 @@ export class HasRoleDirective {
   }
 
   private updateView(): void {
-    if (this.requiredRoles().some(role => this.currentUserRoles.includes(role))) {
+    // Check if the user has any of the required roles
+    const hasRequiredRole = this.requiredRoles().some(role => this.currentUserRoles.includes(role));
+
+    if (hasRequiredRole && !this.isViewRendered) {
+      // If user has the required role and view is not rendered, render the view
+      this.viewContainer.clear();  // Clear any existing view
       this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
+      this.isViewRendered = true;  // Mark the view as rendered
+    } else if (!hasRequiredRole && this.isViewRendered) {
+      // If user doesn't have the required role and the view is rendered, clear the view
       this.viewContainer.clear();
+      this.isViewRendered = false;  // Mark the view as not rendered
     }
   }
 }
