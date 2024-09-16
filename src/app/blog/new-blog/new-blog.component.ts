@@ -1,23 +1,27 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { ChangeDetectionStrategy, Component, inject, } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { DynamicFormsModule } from '../../shared/forms/dynamic-forms.module';
 
 @Component({
   selector: 'app-new-blog',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, RouterLink],
+  imports: [RouterLink, DynamicFormsModule],
   templateUrl: './new-blog.component.html',
   styleUrl: './new-blog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NewBlogComponent implements OnInit {
-  constructor() { 
-    console.log('NewBlogComponent created');
-    console.log('Test')
+export class NewBlogComponent {
+  private fb = inject<FormBuilder>(FormBuilder);
+  articleForm: FormGroup;
+
+  constructor() {
+    this.articleForm = this.fb.group({ 
+
+    })
   }
 
-  ngOnInit(): void {
-    console.log('init')
+  onSaveArticle() {
+    console.log(this.articleForm.value);
   }
 }
