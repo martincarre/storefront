@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { SpinnerService } from '../../shared/spinner/spinner.service';
 
 @Component({
@@ -6,7 +6,8 @@ import { SpinnerService } from '../../shared/spinner/spinner.service';
   standalone: true,
   imports: [],
   templateUrl: './index.component.html',
-  styleUrl: './index.component.css'
+  styleUrl: './index.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IndexComponent {
 

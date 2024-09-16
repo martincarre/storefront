@@ -1,0 +1,103 @@
+@if (article()) {
+    <div class="blog-article-container">
+        <!-- Blog Header with Title, Subtitle, Author, and Date -->
+        <div class="blog-header">
+            <h1 class="blog-title">{{ article()?.title }}</h1>
+            <h3 class="blog-subtitle">{{ article()?.subtitle }}</h3>
+            <div class="blog-meta">
+                <span class="author">By {{ article()?.author }}</span>
+                <span class="date">{{ article()?.date | date: 'longDate' }}</span>
+            </div>
+        </div>
+
+        <!-- Blog Thumbnail Image -->
+        <div class="blog-thumbnail mat-elevation-z4">
+        @if (!showFallback()) {
+            <img 
+                [src]="article()?.thumbnailImage?.imageUrl" 
+                alt="{{ article()?.thumbnailImage?.alt }}" 
+                class="thumbnail-image"
+                (error)="imageError()"
+            />
+        }
+        @if (showFallback()) {
+            <div class="thumbnail-fallback"></div>
+        }
+        </div>
+
+        <!-- Blog Content Sections -->
+        <div class="blog-content">
+            <!-- Loop through sections in the article -->
+            @for (section of article()?.sections; track section; let index = $index) {
+                <section class="blog-section" [ngClass]="{'section-even': index % 2 === 0, 'section-odd': index % 2 !== 0}">
+                    <!-- Flex container for illustration and content -->
+                    @if (section.illustration) {
+                        <div class="section-content-wrapper">
+                            <!-- Section Text (on left for even sections, right for odd sections) -->
+                            <div class="section-text-container">
+                                @if (section.title) {
+                                    <h4 class="section-title">{{ section.title }}</h4>
+                                }
+                                @if (section.content) {
+                                    <p class="section-content">{{ section.content }}</p>
+                                }
+                            </div>
+    
+                            <!-- Section Illustration -->
+                            <div class="illustration-container">
+                                @if (!showIllustrationFallback().includes(index)) {
+                                    <img 
+                                        [src]="section.illustration.imageUrl" 
+                                        alt="{{ section.illustration.alt }}" 
+                                        class="section-illustration"
+                                        (error)="illustrationError(index)"
+                                    />
+                                }
+                                @if (showIllustrationFallback().includes(index)) {
+                                    <div class="illustration-fallback"></div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Full-width content if no illustration -->
+                    @if (!section.illustration) {
+                        <div class="section-full-width">
+                            @if (section.title) {
+                                <h4 class="section-title">{{ section.title }}</h4>
+                            }
+                            @if (section.content) {
+                                <p class="section-content">{{ section.content }}</p>
+                            }
+                        </div>
+                    }
+
+                    <!-- Divider (Full Width) -->
+                    @if (section.divider) {
+                        <div class="section-divider">
+                            <mat-divider></mat-divider>
+                        </div>
+                    }
+
+                    <!-- Call to Action (Full Width) -->
+                    @if (section.callToAction) {
+                        <div class="call-to-action" [style.backgroundColor]="section.callToAction.backgroundColor">
+                            <p>{{ section.callToAction.content }}</p>
+                            <!-- Buttons inside Call-to-Action -->
+                            <div class="call-to-action-buttons">
+                                @for (button of section.callToAction.buttons; track button) {
+                                    <button mat-raised-button color="primary" [routerLink]="button.link">
+                                        @if (button.icon) {
+                                            <mat-icon>{{ button.icon }}</mat-icon>
+                                        }   
+                                        {{ button.text }}
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </section>
+            }
+        </div>
+    </div>
+}

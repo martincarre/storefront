@@ -65,7 +65,7 @@ export class NavService {
     {
       tooltip: 'News',
       icon: 'article',
-      route: 'news',
+      route: 'news/news-list',
       requiredRoles: [UserRole.Guest, UserRole.User]
     }
   ]);

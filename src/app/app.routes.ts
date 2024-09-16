@@ -13,7 +13,18 @@ export const routes: Routes = [
     },
     {
         path: 'news',
-        loadComponent: () => import("./blog/blog-list/blog-list.component").then(c => c.BlogListComponent),
+        children: [
+            {
+                path: 'news-list',
+                loadComponent: () => import("./blog/blog-list/blog-list.component").then(c => c.BlogListComponent),
+                title: 'News',
+            },
+            {
+                path: ':articleId',
+                loadComponent: () => import("./blog/blog-details/blog-details.component").then(c => c.BlogDetailsComponent),
+                title: 'Article'
+            }
+        ]
     },
     {
         path: 'user',
