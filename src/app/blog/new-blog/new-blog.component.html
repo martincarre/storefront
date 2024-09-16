@@ -2,4 +2,104 @@
     <mat-icon>arrow_back_ios</mat-icon>
     Back
 </button>
-<h1>Test</h1>
+<!-- Save Button -->
+<button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Save Article</button>
+
+<h1>
+    New article
+</h1>
+
+<!-- Blog Creation Form -->
+<form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+    <!-- Form for the Main Blog Details -->
+    <mat-card>
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" placeholder="Blog Title">
+        <mat-error>Title is required (Max 120 characters)</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Subtitle</mat-label>
+        <input matInput formControlName="subtitle" placeholder="Blog Subtitle">
+        <mat-error>Subtitle is required (Max 120 characters)</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" placeholder="Blog Description"></textarea>
+          <mat-error>Description is required</mat-error>
+        </mat-form-field>
+        
+        <div formGroupName="thumbnailImage">
+            <mat-form-field appearance="outline">
+                <mat-label>Thumbnail Image URL</mat-label>
+                <input matInput formControlName="imageUrl" placeholder="Thumbnail Image URL">
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline">
+                <mat-label>Alt Text</mat-label>
+                <input matInput formControlName="alt" placeholder="Thumbnail Alt Text">
+                <mat-hint>Max 45 characters</mat-hint>
+            </mat-form-field>
+        </div>
+        
+    </mat-card>
+  
+    <!-- Section Form Array -->
+    <div formArrayName="sections">
+      @for (section of sections.controls; track section; let i = $index) {
+        <mat-card [formGroupName]="i">
+          <mat-card-header>
+            <mat-card-title>
+                <h3>
+                    Section {{ i + 1 }}
+                </h3>
+            </mat-card-title>
+            @if (sections.controls.length > 1) {
+                <button mat-icon-button (click)="removeSection(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+            }
+          </mat-card-header>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Section Title</mat-label>
+            <input matInput formControlName="title" placeholder="Section Title">
+            <mat-hint>Max 120 characters</mat-hint>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Section Content</mat-label>
+            <textarea matInput formControlName="content" placeholder="Section Content" rows="10"></textarea>
+          </mat-form-field>
+  
+          <!-- Divider -->
+          <mat-slide-toggle formControlName="divider">Include Divider</mat-slide-toggle>
+  
+          <!-- Illustration -->
+           <div formGroupName="illustration">
+               <mat-form-field appearance="outline">
+                 <mat-label>Illustration URL</mat-label>
+                 <input matInput formControlName="imageUrl" placeholder="Illustration URL">
+               </mat-form-field>
+       
+               <mat-form-field appearance="outline">
+                 <mat-label>Alt Text</mat-label>
+                 <input matInput formControlName="alt" placeholder="Alt Text for Illustration">
+               </mat-form-field>
+            </div>
+        </mat-card>
+      }
+    </div>
+  
+    <!-- Add Section Button -->
+     @if (sections.controls.length < 10) {
+        <button mat-icon-button (click)="addSection()" type="button">
+          <mat-icon>add</mat-icon> 
+          Add Section
+        </button>
+    }
+  
+    
+</form>
