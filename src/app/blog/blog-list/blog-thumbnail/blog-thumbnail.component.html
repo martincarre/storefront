@@ -1,4 +1,4 @@
-<mat-card class="blog-card" (mouseenter)="hover = true" (mouseleave)="hover = false" [routerLink]="['../', blog().id]">
+<mat-card class="blog-card" (mouseenter)="hover = true" (mouseleave)="hover = false" [routerLink]="['../', 'article', blog().id]">
     <div class="image-container">
       <img [src]="blog().thumbnailImage.imageUrl" alt="{{blog().thumbnailImage.alt}}" (error)="imageError()" />
       @if (showFallback) {

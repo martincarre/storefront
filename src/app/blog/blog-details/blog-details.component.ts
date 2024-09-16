@@ -6,11 +6,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-blog-details',
   standalone: true,
-  imports: [DatePipe, MatDividerModule, MatIconModule, RouterLink, MatCardModule, NgClass],
+  imports: [DatePipe, MatDividerModule, MatButtonModule, MatIconModule, RouterLink, MatCardModule, NgClass],
   templateUrl: './blog-details.component.html',
   styleUrl: './blog-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

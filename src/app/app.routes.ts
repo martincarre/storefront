@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { BlogListComponent } from './blog/blog-list/blog-list.component';
+import { BlogDetailsComponent } from './blog/blog-details/blog-details.component';
+import { NewBlogComponent } from './blog/new-blog/new-blog.component';
 
 export const routes: Routes = [
     {
@@ -11,18 +14,24 @@ export const routes: Routes = [
         loadComponent: () => import("./home/index/index.component").then(c => c.IndexComponent),
         title: 'Maps Business Searcher',
     },
+    // Avoid lazy loading for the blog module to keep the blog list and details components in the initial bundle for SEO
     {
         path: 'news',
         children: [
             {
                 path: 'news-list',
-                loadComponent: () => import("./blog/blog-list/blog-list.component").then(c => c.BlogListComponent),
+                component: BlogListComponent,
                 title: 'News',
             },
             {
-                path: ':articleId',
-                loadComponent: () => import("./blog/blog-details/blog-details.component").then(c => c.BlogDetailsComponent),
+                path: 'article/:articleId',
+                component: BlogDetailsComponent,
                 title: 'Article'
+            },
+            {
+                path: 'new-article',
+                component: NewBlogComponent,
+                title: 'New Article',
             }
         ]
     },
