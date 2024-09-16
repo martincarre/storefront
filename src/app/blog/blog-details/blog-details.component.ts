@@ -31,12 +31,10 @@ export class BlogDetailsComponent {
   }
 
   imageError() {
-    console.log('thumb error');
     this.showFallback.set(true);
   }
 
   illustrationError(illustrationIndex: number) {
-    console.log('illustration error');
     this.showIllustrationFallback.set([...this.showIllustrationFallback(), illustrationIndex]);
     console.log('showIllustrationFallback', this.showIllustrationFallback());
   }
