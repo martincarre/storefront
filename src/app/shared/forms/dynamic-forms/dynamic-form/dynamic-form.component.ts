@@ -4,7 +4,7 @@ import {FormGroup} from '@angular/forms';
 import { DynamicFormQuestionComponent } from '../dynamic-form-question/dynamic-form-question.component';
 import { QuestionControlService } from '../question-control.service';
 import { QuestionBase } from '../question-classes/question-base.class';
-import { DynamicFormsModule } from '../../dynamic-forms.module';
+import { DynamicFormsModule } from '../dynamic-forms.module';
 import { StyleSection } from '../question-classes/form-style-section.class';
 import { StyleSectionComponent } from '../style-section/style-section.component';
 

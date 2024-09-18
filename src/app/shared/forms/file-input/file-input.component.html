@@ -1,0 +1,33 @@
+<div class="file-input-card">
+    <div
+      class="file-dropzone"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      [ngClass]="{ 'file-dropzone-hover': isDragging }"
+    >
+      <mat-icon>cloud_upload</mat-icon>
+      <p>Drag and drop a file here</p>
+      <p>{{ allowedFileTypes }}</p>
+      <p>or</p>
+      <button mat-raised-button color="primary" (click)="fileInput.click()">Browse</button>
+      <input
+        #fileInput
+        type="file"
+        [accept]="allowedFileTypes"
+        (change)="onFileSelected($event)"
+        class="file-input"
+        hidden
+      />
+    </div>
+  
+    <!-- Display file information after selection -->
+     @if(selectedFile) {
+        <div class="file-info">
+            <mat-divider></mat-divider>
+            <p><strong>Selected File:</strong> {{ selectedFile.name }}</p>
+            <p><strong>File Size:</strong> {{ selectedFile.size | number }} bytes</p>
+            <button mat-stroked-button color="warn" (click)="clearFile()">Remove</button>
+        </div>
+    }
+</div>

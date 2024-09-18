@@ -1,7 +1,7 @@
 import { afterNextRender, Component, input } from '@angular/core';
 import { QuestionBase } from '../question-classes/question-base.class';
 import { FormGroup } from '@angular/forms';
-import { DynamicFormsModule } from '../../dynamic-forms.module';
+import { DynamicFormsModule } from '../dynamic-forms.module';
 import { CommonModule } from '@angular/common';
 
 @Component({

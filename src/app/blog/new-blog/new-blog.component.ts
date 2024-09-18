@@ -1,40 +1,48 @@
-import { ChangeDetectionStrategy, Component, inject, } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, inject, } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { DynamicFormsModule } from '../../shared/forms/dynamic-forms.module';
+import { DynamicFormsModule } from '../../shared/forms/dynamic-forms/dynamic-forms.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
-import { BlogArticle } from '../blog-details/blog-article.class';
+import { BlogArticle } from '../blog-details/blog-article.interface';
+import { FirebaseService } from '../../shared/firebase.service';
+import { FileInputComponent } from "../../shared/forms/file-input/file-input.component";
+import { collection, doc, DocumentReference } from 'firebase/firestore';
+import { BlogService } from '../blog.service';
+import { NewBlogForm } from './new-blog-form.interface';
 
 @Component({
   selector: 'app-new-blog',
   standalone: true,
-  imports: [RouterLink, DynamicFormsModule, MatSlideToggleModule, MatCardModule],
+  imports: [RouterLink, DynamicFormsModule, MatSlideToggleModule, MatCardModule, FileInputComponent],
   templateUrl: './new-blog.component.html',
   styleUrl: './new-blog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewBlogComponent {
   private fb = inject<FormBuilder>(FormBuilder);
-  private router = inject(Router);
+  private firebaseService = inject<FirebaseService>(FirebaseService);
+  private blogService = inject<BlogService>(BlogService);
   // FormGroup for the entire article form
   blogForm: FormGroup = this.fb.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],
     description: ['', [Validators.required]],
     subtitle: ['', [Validators.required, Validators.maxLength(120)]],
     thumbnailImage: this.fb.group({
-      imageUrl: ['', Validators.required],
+      file: [null, Validators.required],
       alt: ['', [Validators.maxLength(45)]]
     }),
     sections: this.fb.array([]), // FormArray to hold sections
   });
+  
 
   get sections(): FormArray {
     return this.blogForm.get('sections') as FormArray;
   }
 
   constructor() {
-    this.addSection(); // Start with one section by default
+    this.addSection();
+    
   }
 
   // Create a new section form group
@@ -44,7 +52,7 @@ export class NewBlogComponent {
       content: [''],
       divider: [false],
       illustration: this.fb.group({
-        imageUrl: [''],
+        file: [null],
         alt: ['', [Validators.maxLength(45)]]
       })
     });
@@ -62,31 +70,27 @@ export class NewBlogComponent {
     this.sections.removeAt(index);
   }
 
-  // Handle form submission
-  onSubmit(): void {
-    console.log(this.blogForm.value);
-    if (this.blogForm.valid) {
-      const newBlog: BlogArticle = new BlogArticle({
-        title: this.blogForm.value.title,
-        description: this.blogForm.value.description,
-        subtitle: this.blogForm.value.subtitle,
-        sections: this.blogForm.value.sections,
-        date: new Date(),
-        id: this.generateId(),
-        thumbnailImage: this.blogForm.value.thumbnailImage,
-        author: 'Current User' // Replace with dynamic author assignment
-      });
+  gethumbnailImage(file: File): void {
+    this.blogForm.get('thumbnailImage')?.patchValue({ file: file });
+  }
 
-      // Save the newBlog article (e.g., send it to the backend)
-      console.log(newBlog);
+  getSectionImage(file: File, index: number): void { 
+    this.sections.at(index).get('illustration')?.patchValue({ file: file });
+  }
+
+
+  // Handle form submission
+  onSave(): void {
+    const newArticle: NewBlogForm = this.blogForm.value;
+    // if (this.blogForm.valid) {
+     
+    // Save the newBlog article (e.g., send it to the backend)
+    this.blogService.saveBlogArticle(newArticle);
 
       // Navigate back to the blog list
       // this.router.navigate(['/news/news-list']);
-    }
+    // }
   }
 
-  // Dummy ID generator (in real scenario, this could be more robust)
-  generateId(): string {
-    return Math.random().toString(36).substr(2, 9);
-  }
+  
 }

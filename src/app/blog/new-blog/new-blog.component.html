@@ -1,19 +1,28 @@
-<button mat-raised-button [routerLink]="['../','news-list']" style="margin: 1rem;">
+<div class="button-row">
+  <button mat-raised-button [routerLink]="['../','news-list']" style="margin: 1rem;">
     <mat-icon>arrow_back_ios</mat-icon>
     Back
-</button>
-<!-- Save Button -->
-<button mat-raised-button color="primary" type="submit" (click)="onSubmit()">
+  </button>
+
+  <button mat-raised-button color="primary" type="submit" (click)="onSave()" style="margin: 1rem;">
+    <mat-icon>save</mat-icon>
+    Save Article
+  </button>
+
+  <div class="spacer"></div> <!-- Spacer between the buttons -->
+
+  <button mat-raised-button color="warn" style="margin: 1rem;">
     <mat-icon>publish</mat-icon>
     Publish Article
-</button>
+  </button>
+</div>
 
 <h1>
     New article
 </h1>
 
 <!-- Blog Creation Form -->
-<form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="blogForm">
     <!-- Form for the Main Blog Details -->
     <mat-card>
       <mat-form-field appearance="outline">
@@ -35,11 +44,8 @@
         </mat-form-field>
         
         <div formGroupName="thumbnailImage">
-            <mat-form-field appearance="outline">
-                <mat-label>Thumbnail Image URL</mat-label>
-                <input matInput formControlName="imageUrl" placeholder="Thumbnail Image URL">
-            </mat-form-field>
-        
+            <app-file-input [fileTypes]="['image/jpeg', 'image/jpg', 'image/png']" (fileDropped)="gethumbnailImage($event)"></app-file-input>
+
             <mat-form-field appearance="outline">
                 <mat-label>Alt Text</mat-label>
                 <input matInput formControlName="alt" placeholder="Thumbnail Alt Text">
@@ -77,28 +83,26 @@
             <textarea matInput formControlName="content" placeholder="Section Content" rows="10"></textarea>
           </mat-form-field>
   
-          <!-- Divider -->
-          <mat-slide-toggle formControlName="divider">Include Divider</mat-slide-toggle>
-  
           <!-- Illustration -->
-           <div formGroupName="illustration">
-               <mat-form-field appearance="outline">
-                 <mat-label>Illustration URL</mat-label>
-                 <input matInput formControlName="imageUrl" placeholder="Illustration URL">
-               </mat-form-field>
-       
-               <mat-form-field appearance="outline">
-                 <mat-label>Alt Text</mat-label>
-                 <input matInput formControlName="alt" placeholder="Alt Text for Illustration">
-               </mat-form-field>
+            <div formGroupName="illustration">
+              <app-file-input [fileTypes]="['image/jpeg', 'image/jpg', 'image/png']" (fileDropped)="getSectionImage($event, i)"></app-file-input>
+        
+                <mat-form-field appearance="outline">
+                    <mat-label>Alt Text</mat-label>
+                    <input matInput formControlName="alt" placeholder="Alt Text for Illustration">
+                </mat-form-field>
             </div>
+
+          <!-- Divider -->
+          <mat-slide-toggle formControlName="divider" color="primary">Include Divider</mat-slide-toggle>
+
         </mat-card>
       }
     </div>
   
     <!-- Add Section Button -->
      @if (sections.controls.length < 10) {
-        <button mat-icon-button (click)="addSection()" type="button">
+        <button mat-raised-button color="accent" (click)="addSection()" type="button" style="margin-bottom: 3rem;">
           <mat-icon>add</mat-icon> 
           Add Section
         </button>

@@ -1,0 +1,26 @@
+.file-input-card {
+    padding: 2rem;
+    text-align: center;
+    border: 2px dashed gray;
+    border-radius: 8px;
+}
+
+.file-dropzone {
+    padding: 2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.file-dropzone-hover {
+    background-color: lightgreen;
+    opacity: 0.65;
+}
+
+.file-info {
+    margin-top: 2rem;
+}
+
+button {
+    margin-top: 1rem;
+}

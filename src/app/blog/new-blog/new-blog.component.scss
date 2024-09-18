@@ -8,10 +8,31 @@ mat-card {
     padding: 1.5rem;
 }
 
-button[mat-icon-button] {
-    margin: 10px;
+button[mat-raised-button] {
+    width: 100%;
 }
 
 mat-slide-toggle {
     margin: 10px 0;
 }
+
+.button-row {
+    display: flex;
+    align-items: center;
+  }
+  
+  .spacer {
+    flex-grow: 1;  /* Push the third button to the right */
+  }
+  
+  /* Media query for smartphones (max width of 768px) */
+  @media (max-width: 768px) {
+    .button-row {
+      flex-direction: column;  /* Stack buttons on top of each other */
+    }
+  
+    .button-row button {
+      width: 100%;  /* Ensure buttons take up full width */
+      margin: 0.5rem 0;  /* Adjust margin for stacked buttons */
+    }
+  }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, Signal, signal } from '@angular/core';
 import { BlogService } from '../blog.service';
 import { DatePipe, JsonPipe, NgClass } from '@angular/common';
-import { BlogArticle } from './blog-article.class';
+import { BlogArticle } from './blog-article.interface';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { BlogArticleBase } from './blog-article-base.class';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { BlogArticle } from '../../blog-details/blog-article.interface';
 
 @Component({
   selector: 'app-blog-thumbnail',
@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlogThumbnailComponent {
-  blog = input.required<BlogArticleBase>();
+  blog = input.required<BlogArticle>();
   hover = false;
   showFallback = false;
 

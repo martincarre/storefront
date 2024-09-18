@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal, Signal, } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, Signal, } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { BlogService } from '../blog.service';
 import { BlogThumbnailComponent } from './blog-thumbnail/blog-thumbnail.component';
-import { BlogArticle } from '../blog-details/blog-article.class';
+import { BlogArticle } from '../blog-details/blog-article.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
