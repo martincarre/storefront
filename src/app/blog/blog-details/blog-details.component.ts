@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-blog-details',
@@ -26,7 +27,7 @@ export class BlogDetailsComponent {
   ngOnInit() {
     if (this.articleId()) {
       this.article = computed(() => {
-        return this.blogService.blogList().find(article => article.id === this.articleId()) || null
+        return this.blogService.articleList().find(article => article.id === this.articleId()) || null
       });
     }
   }

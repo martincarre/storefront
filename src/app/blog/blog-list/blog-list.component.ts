@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, Signal, } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, Signal, } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { BlogService } from '../blog.service';
 import { BlogThumbnailComponent } from './blog-thumbnail/blog-thumbnail.component';
@@ -17,23 +17,29 @@ import { RouterLink } from '@angular/router';
 })
 export class BlogListComponent {
   private blogService = inject<BlogService>(BlogService);
-  private blogs: Signal<BlogArticle[]> = this.blogService.blogList;
-  private paginatedBlogsInit = signal<BlogArticle[]>([]);
-  paginatedBlogs = this.paginatedBlogsInit.asReadonly();
-  pageSize: number = 6;
+  private blogs: Signal<BlogArticle[]> = signal<BlogArticle[]>([]);
+  paginatedBlogs = computed<BlogArticle[]>(() => {
+    const allBlogs = this.blogs();
+    const size = this.pageSize();
+    const index = 0;
+    const start = index * size;
+    return allBlogs.slice(start, start + size);
+  });
+  pageSize = signal<number>(5);
 
-  constructor() {
-    this.paginatedBlogsInit.set(this.blogs().slice(0, this.pageSize));
+  constructor() { 
+    this.blogService.fetchBlogArticles();
+    this.blogs = this.blogService.articleList;
   }
 
   get blogsLength(): number {
-    return this.blogs().length;
+    return 1;
   };
 
   onPageChange(event: PageEvent) {
     const startIndex = event.pageIndex * event.pageSize;
     const endIndex = startIndex + event.pageSize;
-    this.paginatedBlogsInit.set(this.blogs().slice(startIndex, endIndex));
+    // this.paginatedBlogsInit.set(this.blogs().slice(startIndex, endIndex));
   };
 
 }

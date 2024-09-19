@@ -1,9 +1,8 @@
-import { afterNextRender, inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { FirebaseService } from '../shared/firebase.service';
-import { MOCKBLOGARTICLES } from './blog-articles.mock-data';
 import { BlogArticle, Section } from './blog-details/blog-article.interface';
 import { NewBlogForm } from './new-blog/new-blog-form.interface';
-import { collection, doc, DocumentReference, setDoc } from 'firebase/firestore';
+import { collection, CollectionReference, doc, DocumentReference, Firestore, getDocs, QuerySnapshot, setDoc, Timestamp } from 'firebase/firestore';
 import { SpinnerService } from '../shared/spinner/spinner.service';
 
 @Injectable({
@@ -11,20 +10,57 @@ import { SpinnerService } from '../shared/spinner/spinner.service';
 })
 export class BlogService {
   private firebaseService = inject<FirebaseService>(FirebaseService);
-  private mockBlogThumbnails = signal<BlogArticle[]>(MOCKBLOGARTICLES.filter((blog: BlogArticle) => blog.published));
+  private firestore: Firestore | null = null;
+  private articlesCollection: CollectionReference | null = null;
+  private blogArticles = signal<BlogArticle[]>([]);
   private spinner = inject<SpinnerService>(SpinnerService);
-  blogList = this.mockBlogThumbnails.asReadonly();
-  docRef: DocumentReference | null = null;
+  articleList = this.blogArticles.asReadonly();
+  newDocRef: DocumentReference | null = null;
 
   constructor() {
-    afterNextRender(() => {
-      const firestore = this.firebaseService.firestore;
-      if (firestore) {
-        this.docRef =  doc(collection(firestore, 'articles'));
+    // afterNextRender(() => {
+      this.firestore = this.firebaseService.firestore;
+      if (this.firestore) {
+        this.articlesCollection = collection(this.firestore, 'articles');
+        if (this.articlesCollection) {
+          this.newDocRef =  doc(this.articlesCollection);
+        }
       }
-    });
+    // });
   }
   
+  // Get the articles from firestore:
+  fetchBlogArticles(): void {
+    console.log('Fetching articles...');
+    this.spinner.show();
+    if (this.articlesCollection) {
+      getDocs(this.articlesCollection)
+        .then((articlesSnapshot: QuerySnapshot) => {
+          console.log('Articles fetched successfully');
+          const articles: BlogArticle[] = [];
+          articlesSnapshot.forEach((doc) => {
+            const article = doc.data() as any;
+            article.date = this.timestampToDate(article.date as Timestamp);
+            articles.push(article as BlogArticle);
+          });
+          this.blogArticles.set(articles);
+          this.spinner.hide();
+        })
+        .catch((error) => {
+          console.error('Error getting documents: ', error);
+          alert('Error fetching articles. Please try again later.');
+          this.spinner.hide();
+        });
+    }
+  }
+
+
+  timestampToDate(timestamp: Timestamp): Date {
+    return new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
+  }
+
+
+  // TODO: Rework this method to simplify, improve potentially error handling and provide helpers.
   async saveBlogArticle(blogForm: NewBlogForm): Promise<void> {
     this.spinner.show();
     // Generate a unique ID for the new article
@@ -82,8 +118,8 @@ export class BlogService {
     };
 
     // Saving the new blog article to Firestore
-    if (this.docRef) {
-      setDoc(this.docRef, newBlog)
+    if (this.newDocRef) {
+      setDoc(this.newDocRef, newBlog)
       .then((res) => {
         console.log(res);
         this.spinner.hide();
@@ -96,12 +132,12 @@ export class BlogService {
     }
   }
 
-  // Dummy ID generator (in real scenario, this could be more robust)
+  // ID generator to save the new Document
   private generateId(): string {
-    if (!this.docRef) { 
+    if (!this.newDocRef) { 
       return '';
     } else {
-      return this.docRef.id;
+      return this.newDocRef.id;
     }
   }
 
