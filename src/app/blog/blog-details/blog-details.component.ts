@@ -20,14 +20,14 @@ import { Timestamp } from 'firebase/firestore';
 export class BlogDetailsComponent {
   private blogService = inject<BlogService>(BlogService);
   articleId = input.required<string>();
-  article: Signal<BlogArticle | null> = signal<BlogArticle | null>(null);
+  article = signal<BlogArticle | null>(null);
   showFallback = signal<boolean>(false);
   showIllustrationFallback = signal<number[]>([]);
 
   ngOnInit() {
     if (this.articleId()) {
-      this.article = computed(() => {
-        return this.blogService.articleList().find(article => article.id === this.articleId()) || null
+      this.blogService.fetchBlogArticleById(this.articleId()).subscribe((res: any) => {
+        this.article.set(res.data as BlogArticle);
       });
     }
   }

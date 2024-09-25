@@ -56,3 +56,7 @@ environments/
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json

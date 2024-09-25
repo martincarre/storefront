@@ -2,16 +2,25 @@
     <mat-icon>add</mat-icon>
     New article
 </button>
-<mat-paginator
+<!-- <mat-paginator
     [length]="blogsLength"
     [pageSizeOptions]="[6, 10, 20]"
     [pageSize]="pageSize"
     [showFirstLastButtons]="true"
     (page)="onPageChange($event)"
 >
-</mat-paginator>
+</mat-paginator> -->
+
+@if (blogPosts().length > 0) {
     <div class="blog-list">
-        @for (blog of paginatedBlogs(); track blog.id) {
+        @for (blog of blogPosts(); track blog) {
             <app-blog-thumbnail [blog]="blog"></app-blog-thumbnail>
         }
-</div>
+    </div>
+}
+@else {
+    <div class="no-blogs">
+        <h2>No blogs found</h2>
+        <p>It looks like there are no blog posts available at the moment. Please come back later.</p>
+    </div>
+}
