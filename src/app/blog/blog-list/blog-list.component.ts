@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,6 +6,7 @@ import { BlogThumbnailComponent } from './blog-thumbnail/blog-thumbnail.componen
 import { RouterLink } from '@angular/router';
 import { BlogService } from '../blog.service';
 import { FunctionServerResponse } from '../../shared/function-server-response.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-blog-list',
@@ -14,8 +15,9 @@ import { FunctionServerResponse } from '../../shared/function-server-response.in
   templateUrl: './blog-list.component.html',
   styleUrls: ['./blog-list.component.scss'],
 })
-export class BlogListComponent {
+export class BlogListComponent implements OnInit, OnDestroy {
   private blogService = inject(BlogService);
+  private articlesSubscription: Subscription = new Subscription();
   blogPosts = signal([]);
 
   ngOnInit() {
@@ -46,5 +48,9 @@ export class BlogListComponent {
   onPageChange(event: PageEvent) {
     this.pageSize.set(event.pageSize);
     this.pageIndex.set(event.pageIndex);
+  }
+
+  ngOnDestroy(): void {
+    this.articlesSubscription.unsubscribe();
   }
 }
