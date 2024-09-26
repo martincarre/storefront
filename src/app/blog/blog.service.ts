@@ -6,6 +6,8 @@ import { SpinnerService } from '../shared/spinner/spinner.service';
 import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { FunctionServerResponse } from '../shared/function-server-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +20,12 @@ export class BlogService {
   private storage: Storage = inject(Storage);
   private spinner = inject(SpinnerService);
 
-  fetchBlogArticles() {
-    return this.http.get(`${environment.httpApiUrls.blogArticles}/fetchBlogPosts`);
+  fetchBlogArticles(): Observable<FunctionServerResponse> {
+    return this.http.get<FunctionServerResponse>(`${environment.httpApiUrls.blogArticles}/fetchBlogPosts`);
   };
 
-  fetchBlogArticleById(id: string) {
-    return this.http.get(`${environment.httpApiUrls.blogArticles}/fetchBlogPostById?id=${id}`);
+  fetchBlogArticleById(id: string): Observable<FunctionServerResponse> {
+    return this.http.get<FunctionServerResponse>(`${environment.httpApiUrls.blogArticles}/fetchBlogPostById?id=${id}`);
   };
   
   /**

@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Timestamp } from 'firebase/firestore';
+import { FunctionServerResponse } from '../../shared/function-server-response.interface';
 
 @Component({
   selector: 'app-blog-details',
@@ -26,7 +27,7 @@ export class BlogDetailsComponent {
 
   ngOnInit() {
     if (this.articleId()) {
-      this.blogService.fetchBlogArticleById(this.articleId()).subscribe((res: any) => {
+      this.blogService.fetchBlogArticleById(this.articleId()).subscribe((res: FunctionServerResponse) => {
         this.article.set(res.data as BlogArticle);
       });
     }

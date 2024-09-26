@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BlogThumbnailComponent } from './blog-thumbnail/blog-thumbnail.component';
 import { RouterLink } from '@angular/router';
 import { BlogService } from '../blog.service';
+import { FunctionServerResponse } from '../../shared/function-server-response.interface';
 
 @Component({
   selector: 'app-blog-list',
@@ -18,9 +19,8 @@ export class BlogListComponent {
   blogPosts = signal([]);
 
   ngOnInit() {
-    this.blogService.fetchBlogArticles().subscribe((articles: any) => {
-      console.log(articles.data);
-      this.blogPosts.set(articles.data);
+    this.blogService.fetchBlogArticles().subscribe((res: FunctionServerResponse) => {
+      this.blogPosts.set(res.data);
     });
   }
 
