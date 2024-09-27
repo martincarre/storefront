@@ -5,6 +5,8 @@ export interface NewBlogForm {
     title: string;
     subtitle: string;
     description: string;
+    url: string;
+    tags: string[];
     sections: FormSectionNewArticle[];
     thumbnailImage: {
         imageUrl: string;

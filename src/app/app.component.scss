@@ -22,6 +22,11 @@
   width: calc(100% - 105px);
 }
 
+mat-sidenav-content {
+  padding: 2rem;
+  max-height: 100%;
+}
+
 /* Mobile view adjustments */
 @media (max-width: 768px) {
   .top-bar {
@@ -61,7 +66,3 @@
   }
 }
 
-mat-sidenav-content {
-  padding: 2rem;
-  max-height: 100%;
-}

@@ -4,6 +4,9 @@ mat-form-field {
 }
 
 mat-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     margin-bottom: 20px;
     padding: 1.5rem;
 }
@@ -14,6 +17,23 @@ button[mat-raised-button] {
 
 mat-slide-toggle {
     margin: 10px 0;
+}
+
+.new-article-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-article-content-wrapper > * { 
+  width: 80%; 
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two cards per row on desktop */
+  grid-gap: 1rem; /* Gap between cards */
+  margin-bottom: 2rem; /* Space at the bottom */
 }
 
 .button-row {
@@ -34,5 +54,13 @@ mat-slide-toggle {
     .button-row button {
       width: 100%;  /* Ensure buttons take up full width */
       margin: 0.5rem 0;  /* Adjust margin for stacked buttons */
+    }
+
+    .card-container {
+      grid-template-columns: 1fr; /* One card per row on mobile */
+    }
+
+    .new-article-content-wrapper > * { 
+      width: 100%; 
     }
   }

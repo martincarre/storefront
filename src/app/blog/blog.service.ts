@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { BlogArticle, Section } from './blog-details/blog-article.interface';
-import { collection, doc, Firestore, setDoc } from '@angular/fire/firestore';
-import { NewBlogForm } from './new-blog/new-blog-form.interface';
-import { SpinnerService } from '../shared/spinner/spinner.service';
+import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { NewBlogForm } from './new-blog/new-blog-form.interface';;
 import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -14,11 +13,8 @@ import { FunctionServerResponse } from '../shared/function-server-response.inter
 })
 export class BlogService {
   private firestore = inject(Firestore);
-  private articlesCollection = collection(this.firestore, 'articles');
   private http: HttpClient = inject(HttpClient);
-
   private storage: Storage = inject(Storage);
-  private spinner = inject(SpinnerService);
 
   fetchBlogArticles(): Observable<FunctionServerResponse> {
     return this.http.get<FunctionServerResponse>(`${environment.httpApiUrls.blogArticles}/fetchBlogPosts`);
@@ -32,11 +28,14 @@ export class BlogService {
    * Save a new blog article to Firestore.
    * @param blogForm - The form data for the new blog article.
    */
-  async saveBlogArticle(blogForm: NewBlogForm): Promise<void> {
-    this.spinner.show();
+  async saveBlogArticle(blogForm: NewBlogForm): Promise<boolean> {
     try {
-      // Generate a unique ID for the new article
-      const newDocRef = doc(this.articlesCollection);
+
+      // Adapt the url to become the document ID
+      blogForm.url = blogForm.url.replace(/\s+/g, '-').toLowerCase();
+
+      // Generate a docRef for the new article
+      const newDocRef = doc(this.firestore, 'articles', blogForm.url);
 
       // Upload thumbnail image
       blogForm.thumbnailImage.imageUrl = await this.uploadImage(blogForm.thumbnailImage.file, `blog-thumbnails/${newDocRef.id}`);
@@ -61,7 +60,9 @@ export class BlogService {
         description: blogForm.description,
         subtitle: blogForm.subtitle,
         date: new Date(),
+        tags: blogForm.tags,
         sections: sections,
+        url: blogForm.url,
         id: newDocRef.id,
         thumbnailImage: { imageUrl: blogForm.thumbnailImage.imageUrl, alt: blogForm.thumbnailImage.alt },
         author: 'Current User' // TODO: Replace with dynamic author assignment
@@ -70,11 +71,11 @@ export class BlogService {
       // Save the new blog article to Firestore
       await setDoc(newDocRef, newBlog);
       console.log('Blog article saved successfully.');
+      return Promise.resolve(true);
     } catch (error) {
       console.error('Error saving blog article:', error);
       alert('Error saving article. Please try again later.');
-    } finally {
-      this.spinner.hide();
+      return Promise.resolve(false);
     }
   }
 

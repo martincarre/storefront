@@ -3,7 +3,9 @@ export interface BlogArticle {
     description: string;
     subtitle: string;
     sections: Section[];
+    url: string;
     date: Date;
+    tags?: string[];
     thumbnailImage: { imageUrl: string; alt?: string };
     id: string;
     author: string;
