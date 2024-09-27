@@ -76,12 +76,13 @@
           
           <div formGroupName="thumbnailImage">
               <app-file-input [fileTypes]="['image/jpeg', 'image/jpg', 'image/png']" (fileDropped)="gethumbnailImage($event)"></app-file-input>
-  
-              <mat-form-field appearance="outline">
-                  <mat-label>Alt Text</mat-label>
-                  <input matInput formControlName="alt" placeholder="Thumbnail Alt Text">
-                  <mat-hint>Max 45 characters</mat-hint>
-              </mat-form-field>
+              @if(blogForm.get('thumbnailImage.alt')) {
+                <mat-form-field appearance="outline">
+                    <mat-label>Alt Text</mat-label>
+                    <input matInput formControlName="alt" placeholder="Thumbnail Alt Text">
+                    <mat-hint>Max 45 characters</mat-hint>
+                </mat-form-field>
+              }
           </div>
           
       </mat-card>
@@ -124,11 +125,12 @@
             <!-- Illustration -->
               <div formGroupName="illustration">
                 <app-file-input [fileTypes]="['image/jpeg', 'image/jpg', 'image/png']" (fileDropped)="getSectionImage($event, i)"></app-file-input>
-          
-                  <mat-form-field appearance="outline">
-                      <mat-label>Alt Text</mat-label>
-                      <input matInput formControlName="alt" placeholder="Alt Text for Illustration">
-                  </mat-form-field>
+                  @if (section.get('illustration.alt')) {
+                    <mat-form-field appearance="outline">
+                        <mat-label>Alt Text</mat-label>
+                        <input matInput formControlName="alt" placeholder="Alt Text for Illustration">
+                    </mat-form-field>
+                  }
               </div>
   
             <!-- Divider -->
@@ -137,5 +139,13 @@
           </mat-card>
         }
       </div>
+
+      <!-- Add Section Button #2 -->
+      @if (sections.controls.length < 10) {
+        <button mat-fab extended color="accent" (click)="addSection()" type="button" style="margin-bottom: 2rem;">
+          <mat-icon>add</mat-icon> 
+          Add Section
+        </button>
+      }
   </form>
 </div>

@@ -32,7 +32,6 @@ export class NewBlogComponent {
     url: ['', [Validators.maxLength(60)]],
     thumbnailImage: this.fb.group({
       file: [null, Validators.required],
-      alt: ['', [Validators.maxLength(45)]]
     }),
     sections: this.fb.array([]), // FormArray to hold sections
   });
@@ -59,7 +58,6 @@ export class NewBlogComponent {
       divider: [false],
       illustration: this.fb.group({
         file: [null],
-        alt: ['', [Validators.maxLength(45)]]
       })
     });
   }
@@ -77,11 +75,21 @@ export class NewBlogComponent {
   }
 
   gethumbnailImage(file: File): void {
-    this.blogForm.get('thumbnailImage')?.patchValue({ file: file });
+    const thumbnailImageGroup = this.blogForm.get('thumbnailImage') as FormGroup;
+    thumbnailImageGroup.patchValue({ file: file });
+    // Add the 'alt' control if it doesn't exist
+    if (!thumbnailImageGroup.contains('alt')) {
+      thumbnailImageGroup.addControl('alt', this.fb.control('', [Validators.maxLength(45)]));
+    }
   }
 
   getSectionImage(file: File, index: number): void { 
-    this.sections.at(index).get('illustration')?.patchValue({ file: file });
+    const sectionImage = (this.blogForm.get('sections') as FormArray).at(index).get('illustration') as FormGroup;
+    sectionImage.patchValue({ file: file });
+
+    if (!sectionImage.contains('alt')) {
+      sectionImage.addControl('alt', this.fb.control('', [Validators.maxLength(45)]));
+    }
   }
 
   /**
