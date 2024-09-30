@@ -41,10 +41,11 @@
                             <!-- Section Text (on left for even sections, right for odd sections) -->
                             <div class="section-text-container">
                                 @if (section.title) {
-                                    <h4 class="section-title">{{ section.title }}</h4>
+                                    <h3 class="section-title">{{ section.title }}</h3>
                                 }
                                 @if (section.content) {
-                                    <p class="section-content">{{ section.content }}</p>
+                                    <div class="section-content" [innerHTML]="sanitizeContent(section.content)"></div>
+                                    <!-- <p class="section-content">{{ section.content }}</p> -->
                                 }
                             </div>
     

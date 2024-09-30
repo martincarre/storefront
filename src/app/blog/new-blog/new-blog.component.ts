@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal, } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { QuillModule } from 'ngx-quill';
 import { COMMA, ENTER, P } from '@angular/cdk/keycodes';
 import { Router, RouterLink } from '@angular/router';
 import { DynamicFormsModule } from '../../shared/forms/dynamic-forms/dynamic-forms.module';
@@ -14,7 +15,7 @@ import { BlogArticle } from '../blog-details/blog-article.interface';
 @Component({
   selector: 'app-new-blog',
   standalone: true,
-  imports: [RouterLink, DynamicFormsModule, MatSlideToggleModule, MatCardModule, FileInputComponent, MatChipsModule, ],
+  imports: [RouterLink, DynamicFormsModule, MatSlideToggleModule, MatCardModule, FileInputComponent, MatChipsModule, QuillModule, ],
   templateUrl: './new-blog.component.html',
   styleUrl: './new-blog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -56,7 +57,7 @@ export class NewBlogComponent {
   newSection(): FormGroup {
     return this.fb.group({
       title: ['', [Validators.maxLength(120)]],
-      content: [''],
+      content: [null],
       divider: [false],
       illustration: this.fb.group({
         file: [null],
@@ -103,6 +104,10 @@ export class NewBlogComponent {
     const value = event.value.trim();
 
     if (!value) {
+      return;
+    }
+
+    if (this.tags().includes(value)) {
       return;
     }
     // Ensure the tag is not empty and does not exceed 60 characters

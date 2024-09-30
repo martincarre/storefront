@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy, OnInit, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy, OnInit, PLATFORM_ID, Signal, signal } from '@angular/core';
 import { BlogService } from '../blog.service';
-import { DatePipe, JsonPipe, NgClass } from '@angular/common';
+import { DatePipe, isPlatformBrowser, JsonPipe, NgClass } from '@angular/common';
 import { BlogArticle } from './blog-article.interface';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Timestamp } from 'firebase/firestore';
 import { FunctionServerResponse } from '../../shared/function-server-response.interface';
 import { Subscription } from 'rxjs';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-blog-details',
@@ -20,12 +21,20 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlogDetailsComponent implements OnInit, OnDestroy {
+  private platformId = inject(PLATFORM_ID);
   private blogService = inject<BlogService>(BlogService);
   private articleSubscription: Subscription = new Subscription();
+  private sanitizer = inject<DomSanitizer>(DomSanitizer);
   articleId = input.required<string>();
   article = signal<BlogArticle | null>(null);
   showFallback = signal<boolean>(false);
   showIllustrationFallback = signal<number[]>([]);
+
+  // Use the DomSanitizer to bypass sanitization
+  sanitizeContent(content: string): SafeHtml {
+    // if (isPlatformBrowser(this.platformId)) {
+    return this.sanitizer.bypassSecurityTrustHtml(content);
+  }
 
   ngOnInit() {
     if (this.articleId()) {

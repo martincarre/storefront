@@ -51,7 +51,7 @@
         <mat-form-field appearance="outline">
             <mat-label>Custom URL</mat-label>
             <input matInput formControlName="url" placeholder="desired-url-for-the-article">
-            <mat-hint>If left empty the article title will serve as URL. The URL is limited to 60 characters and will replace spaces with "-"</mat-hint>
+            <mat-hint>If left empty the article title will serve as URL. The URL is limited to 60 characters</mat-hint>
             <mat-error>URL is required</mat-error>
         </mat-form-field>
   
@@ -74,7 +74,7 @@
               [matChipInputAddOnBlur]="true"
               (matChipInputTokenEnd)="addTag($event)">
           </mat-chip-grid>
-          <mat-hint>Tags are limited to 60 characters and will replace spaces with "-".</mat-hint>
+          <mat-hint>Tags are limited to 60 characters.</mat-hint>
         </mat-form-field>
           
           <div formGroupName="thumbnailImage">
@@ -100,7 +100,7 @@
                   </h3>
               </mat-card-title>
               @if (sections.controls.length > 1) {
-                  <button mat-icon-button (click)="removeSection(i)">
+                  <button style="margin-left: 0.5rem; color: red" mat-icon-button (click)="removeSection(i)">
                     <mat-icon>delete</mat-icon>
                   </button>
               }
@@ -112,10 +112,8 @@
               <mat-hint>Max 120 characters</mat-hint>
             </mat-form-field>
     
-            <mat-form-field appearance="outline">
-              <mat-label>Section Content</mat-label>
-              <textarea matInput formControlName="content" placeholder="Section Content" rows="10"></textarea>
-            </mat-form-field>
+
+            <quill-editor formControlName="content"></quill-editor>
     
             <!-- Illustration -->
               <div formGroupName="illustration">
