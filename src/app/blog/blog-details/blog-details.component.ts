@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import { Timestamp } from 'firebase/firestore';
 import { FunctionServerResponse } from '../../shared/function-server-response.interface';
 import { Subscription } from 'rxjs';
@@ -15,7 +16,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'app-blog-details',
   standalone: true,
-  imports: [DatePipe, MatDividerModule, MatButtonModule, MatIconModule, RouterLink, MatCardModule, NgClass],
+  imports: [DatePipe, MatDividerModule, MatButtonModule, MatIconModule, RouterLink, MatCardModule, NgClass, MatToolbarModule],
   templateUrl: './blog-details.component.html',
   styleUrl: './blog-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

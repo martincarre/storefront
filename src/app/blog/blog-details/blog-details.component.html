@@ -1,7 +1,17 @@
-<button mat-raised-button [routerLink]="['../..', 'news-list']" style="margin: 1rem;">
-    <mat-icon>arrow_back_ios</mat-icon>
-    Back
-</button>
+<mat-toolbar>
+    <button mat-raised-button [routerLink]="['../..', 'news-list']" style="margin: 1rem;">
+        <mat-icon>arrow_back_ios</mat-icon>
+        Back
+    </button>
+    <div class="spacer"></div>
+    @if (article()) {
+        <button mat-raised-button color="warn" [routerLink]="['../..', 'new-article', article()?.id ]">
+            <mat-icon>edit</mat-icon>
+            Edit
+        </button>
+    }
+</mat-toolbar>
+
 
 @if (article()) {
     <div class="blog-article-container">

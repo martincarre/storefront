@@ -37,6 +37,11 @@ export const routes: Routes = [
                 path: 'new-article',
                 component: NewBlogComponent,
                 title: 'New Article',
+            },
+            {
+                path: 'new-article/:articleId',
+                component: NewBlogComponent,
+                title: 'Edit Article',
             }
         ]
     },
