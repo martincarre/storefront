@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FileInputComponent } from "../../shared/forms/file-input/file-input.component";
 import { BlogService } from '../blog.service';
 import { NewBlogForm } from './new-blog-form.interface';
+import { BlogArticle } from '../blog-details/blog-article.interface';
 
 @Component({
   selector: 'app-new-blog',
@@ -23,11 +24,13 @@ export class NewBlogComponent {
   private router = inject<Router>(Router);
   private blogService = inject<BlogService>(BlogService);
   tags = signal<string[]>([]);
+  private currId = signal<string | null>(null);
+  currArticle = signal<BlogArticle | null>(null);
 
   // FormGroup for the entire article form
   blogForm: FormGroup = this.fb.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],
-    description: ['', [Validators.required]],
+    description: ['', [Validators.required, Validators.maxLength(300)]],
     subtitle: ['', [Validators.required, Validators.maxLength(120)]],
     url: ['', [Validators.maxLength(60)]],
     thumbnailImage: this.fb.group({
@@ -49,7 +52,6 @@ export class NewBlogComponent {
    * Function to handle section management
    * and the related form controls
    */
-
   // Create a new section form group
   newSection(): FormGroup {
     return this.fb.group({
@@ -144,14 +146,24 @@ export class NewBlogComponent {
     this.tags.update((tags: string[]) => tags.filter(t => t !== tag));
   }
 
-
-
   /**
    * Handling the form submission
    */
   async onSave() {
     const newArticle: NewBlogForm = this.blogForm.value;
+
+    // Ensure the form is valid
+    if (this.blogForm.invalid) {
+      alert('Please fill out the required fields.');
+      return;
+    }
     
+    // Ensure the form is dirty
+    if (!this.blogForm.dirty) { 
+      alert('No changes detected. Please make changes before saving.');
+      return;
+    }
+
     // Add tags to the new article
     newArticle.tags = this.tags();
 
@@ -162,13 +174,33 @@ export class NewBlogComponent {
 
     // Save the newBlog article (e.g., send it to the backend)
     const saveRes = await this.blogService.saveBlogArticle(newArticle);
-    console.log('saveRes', saveRes);
-    if (saveRes) {
-      // Navigate back to the blog list
-      this.router.navigate(['/news/news-list']);
-    } else {
-      alert('Error saving article. Please try again or contact support.');
+    if (saveRes.success && saveRes.savedArticle) {
+      alert('Article saved successfully.');
+      this.currId.set(saveRes.savedArticle.id);
+      this.currArticle.set(saveRes.savedArticle);
+      this.blogForm.markAsPristine();
     }
   }
-  
+
+  async onPublish() {
+    const articleToPublish = this.currArticle(); 
+    console.log(articleToPublish);
+    // if there's no current article then save first. 
+    // if there's a current article and the blogForm is dirty, save the changes
+    if (!articleToPublish || (articleToPublish && this.blogForm.dirty)) {
+      console.log('saving article', articleToPublish);
+      await this.onSave();
+    }
+
+    if (articleToPublish) {
+      const publicationRes = await this.blogService.publishBlogArticle(articleToPublish.id);
+      if (publicationRes.success) {
+        alert('Article published successfully.');
+        this.router.navigate(['news/news-list']);
+      }
+    }
+  }
+
+
+ 
 }

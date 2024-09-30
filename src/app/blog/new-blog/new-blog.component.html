@@ -10,39 +10,42 @@
       Back
     </button>
   
-    <button mat-raised-button color="primary" type="submit" (click)="onSave()" style="margin: 1rem;">
+    <button mat-raised-button color="primary" type="submit" (click)="onSave()" style="margin: 1rem;" [disabled]="blogForm.invalid || !blogForm.dirty">
       <mat-icon>save</mat-icon>
       Save Article
     </button>
   
     <div class="spacer"></div> <!-- Spacer between the buttons -->
   
-    <button mat-raised-button color="warn" style="margin: 1rem;">
+    <button mat-raised-button color="warn" style="margin: 1rem;" (click)="onPublish()" [disabled]="!currArticle()">
       <mat-icon>publish</mat-icon>
       Publish Article
     </button>
   </div>
   
   <!-- Blog Creation Form -->
-  <form [formGroup]="blogForm">
+  <form [formGroup]="blogForm" class="card-container">
       <!-- Form for the Main Blog Details -->
-      <mat-card>
+      <mat-card style="background-color: rgba(220, 0, 49, 0.15) !important;">
         <mat-form-field appearance="outline">
           <mat-label>Title</mat-label>
           <input matInput formControlName="title" placeholder="Blog Title">
+          <mat-hint>Max 120 characters</mat-hint>
           <mat-error>Title is required (Max 120 characters)</mat-error>
         </mat-form-field>
     
         <mat-form-field appearance="outline">
           <mat-label>Subtitle</mat-label>
           <input matInput formControlName="subtitle" placeholder="Blog Subtitle">
+          <mat-hint>Max 120 characters</mat-hint>
           <mat-error>Subtitle is required (Max 120 characters)</mat-error>
         </mat-form-field>
         
         <mat-form-field appearance="outline">
-            <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description" placeholder="Blog Description"></textarea>
-            <mat-error>Description is required</mat-error>
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" placeholder="Blog Description"></textarea>
+          <mat-hint>Max 300 characters</mat-hint>
+          <mat-error>Description is required (Max 300 characters)</mat-error>
         </mat-form-field>
   
         <mat-form-field appearance="outline">
@@ -86,18 +89,10 @@
           </div>
           
       </mat-card>
-  
-      <!-- Add Section Button -->
-      @if (sections.controls.length < 10) {
-        <button mat-fab extended color="accent" (click)="addSection()" type="button" style="margin-bottom: 2rem;">
-          <mat-icon>add</mat-icon> 
-          Add Section
-        </button>
-      }
       <!-- Section Form Array -->
-      <div formArrayName="sections" class="card-container">
+      <ng-container formArrayName="sections">
         @for (section of sections.controls; track section; let i = $index) {
-          <mat-card [formGroupName]="i">
+          <mat-card [formGroupName]="i" appearance="outlined">
             <mat-card-header>
               <mat-card-title>
                   <h3>
@@ -138,7 +133,7 @@
   
           </mat-card>
         }
-      </div>
+      </ng-container>
 
       <!-- Add Section Button #2 -->
       @if (sections.controls.length < 10) {

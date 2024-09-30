@@ -1,12 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { BlogArticle, Section } from './blog-details/blog-article.interface';
-import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { NewBlogForm } from './new-blog/new-blog-form.interface';;
 import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { FunctionServerResponse } from '../shared/function-server-response.interface';
+import { updateDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class BlogService {
    * Save a new blog article to Firestore.
    * @param blogForm - The form data for the new blog article.
    */
-  async saveBlogArticle(blogForm: NewBlogForm): Promise<boolean> {
+  async saveBlogArticle(blogForm: NewBlogForm): Promise<{success: boolean, savedArticle: BlogArticle | null}> {
     try {
 
       // Adapt the url to become the document ID
@@ -71,14 +72,26 @@ export class BlogService {
       // Save the new blog article to Firestore
       await setDoc(newDocRef, newBlog);
       console.log('Blog article saved successfully.');
-      return Promise.resolve(true);
+      return Promise.resolve({ success: true, savedArticle: newBlog });
     } catch (error) {
       console.error('Error saving blog article:', error);
-      alert('Error saving article. Please try again later.');
-      return Promise.resolve(false);
+      alert(`Error saving article. Please try again later. Error reference: ${error}`);
+      return Promise.resolve({ success: false, savedArticle: null });
     }
   }
 
+  async publishBlogArticle(id: string): Promise<{success: boolean}> {
+    try {
+      await updateDoc(doc(this.firestore, 'articles', id), { published: true });
+      console.log('Blog article published successfully.');
+      return Promise.resolve({ success: true });
+    }
+    catch (error) {
+      console.error('Error publishing blog article:', error);
+      alert(`Error publishing article. Please try again later. Error reference: ${error}`);
+      return Promise.resolve({ success: false });
+    }
+  }
   /**
    * Adapt sections from the form to the BlogArticle interface.
    * @param formSections - Sections from the blog form.
