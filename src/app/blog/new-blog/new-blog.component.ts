@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal, } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit, signal, } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { COMMA, ENTER, P } from '@angular/cdk/keycodes';
 import { Router, RouterLink } from '@angular/router';
@@ -11,6 +11,7 @@ import { FileInputComponent } from "../../shared/forms/file-input/file-input.com
 import { BlogService } from '../blog.service';
 import { NewBlogForm } from './new-blog-form.interface';
 import { BlogArticle } from '../blog-details/blog-article.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-blog',
@@ -20,7 +21,7 @@ import { BlogArticle } from '../blog-details/blog-article.interface';
   styleUrl: './new-blog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NewBlogComponent {
+export class NewBlogComponent implements OnInit, OnDestroy {
   private fb = inject<FormBuilder>(FormBuilder);
   private router = inject<Router>(Router);
   private blogService = inject<BlogService>(BlogService);
@@ -28,6 +29,10 @@ export class NewBlogComponent {
   private currId = signal<string | null>(null);
   currArticle = signal<BlogArticle | null>(null);
 
+
+  articleIdInTheUrl = input<string | null>(null, { alias: 'articleId' });
+  private articleSub: Subscription = new Subscription();
+  
   // FormGroup for the entire article form
   blogForm: FormGroup = this.fb.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],
@@ -41,12 +46,73 @@ export class NewBlogComponent {
   });
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
+
   get sections(): FormArray {
     return this.blogForm.get('sections') as FormArray;
   }
 
-  constructor() {
-    this.addSection();
+  async ngOnInit() {
+    if (this.articleIdInTheUrl()) {
+      this.currId.set(this.articleIdInTheUrl());
+      const articleId = this.currId();
+      if (articleId) {
+        this.articleSub = this.blogService.fetchBlogArticleById(articleId)
+          .subscribe((res) => {
+            if (res.success) { 
+              const fetchedArticle = res.data as BlogArticle;
+              this.currArticle.set(fetchedArticle);
+              this.initializeForm(fetchedArticle);
+            }
+          });
+      }
+    }
+    else {
+      this.initializeForm();
+    }
+  }
+
+    /**
+   * If there is an existing article, populate the form with its data
+   */
+  initializeForm(article?: BlogArticle): void {
+    // Set the main fields
+    this.blogForm = this.fb.group({
+      title: [article? article.title : '', [Validators.required, Validators.maxLength(120)]],
+      description: [article ? article.description : '', [Validators.required, Validators.maxLength(300)]],
+      subtitle: [article ? article.subtitle : '', [Validators.required, Validators.maxLength(120)]],
+      url: [article ? article.url : '', [Validators.maxLength(60)]],
+      thumbnailImage: this.fb.group({
+        file: [article ? article.thumbnailImage.imageUrl : null, Validators.required],
+        alt: [article ? article.thumbnailImage?.alt : '', [Validators.maxLength(45), Validators.required]],
+      }),
+      sections: this.fb.array([]), // FormArray to hold sections
+    });
+    
+    if (article) {
+      // Clear existing sections in the FormArray
+      this.sections.clear();
+    
+      // Populate the sections
+      article.sections.forEach((section) => {
+        const sectionGroup = this.fb.group({
+          title: [section.title, [Validators.maxLength(120)]],
+          content: [section.content], // Populate the Quill editor content here
+          divider: [section.divider],
+          illustration: this.fb.group({
+            file: [section.illustration?.imageUrl],  // Assuming the image URL
+            alt: [section.illustration?.alt, [Validators.maxLength(45)]]
+          })
+        });
+        this.sections.push(sectionGroup);
+      });
+    
+      // Populate the tags if they exist
+      if (article.tags) {
+        this.tags.set(article.tags);
+      }
+    } else { 
+      this.addSection();
+    }
   }
 
   /**
@@ -206,6 +272,8 @@ export class NewBlogComponent {
     }
   }
 
-
+  ngOnDestroy(): void {
+    this.articleSub.unsubscribe();
+  }
  
 }

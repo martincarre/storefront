@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy, OnInit, PLATFORM_ID, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { BlogService } from '../blog.service';
-import { DatePipe, isPlatformBrowser, JsonPipe, NgClass } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { BlogArticle } from './blog-article.interface';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +22,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlogDetailsComponent implements OnInit, OnDestroy {
-  private platformId = inject(PLATFORM_ID);
   private blogService = inject<BlogService>(BlogService);
   private articleSubscription: Subscription = new Subscription();
   private sanitizer = inject<DomSanitizer>(DomSanitizer);

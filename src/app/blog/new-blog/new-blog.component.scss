@@ -37,11 +37,21 @@ mat-slide-toggle {
   margin-bottom: 2rem; /* Space at the bottom */
 }
 
+/* CSS for image preview */
+.img-preview {
+  width: 250px;      /* Set a fixed width for the preview */
+  height: auto;      /* Auto height to maintain aspect ratio */
+  object-fit: cover; /* This ensures the image fits inside the defined width/height without stretching */
+  border-radius: 8px; /* Optional: Add some rounded corners */
+  border: 1px solid #ddd; /* Optional: Add a light border */
+  margin-top: 1rem;   /* Add some space at the top */
+}
+
 .button-row {
   display: flex;
   align-items: center;
 }
-  
+
 .spacer {
   flex-grow: 1;  /* Push the third button to the right */
 }
@@ -69,5 +79,9 @@ quill-editor {
 
     .new-article-content-wrapper > * { 
       width: 100%; 
+    }
+
+    .img-preview {
+      width: 100px;  /* Make the image smaller on mobile */
     }
   }

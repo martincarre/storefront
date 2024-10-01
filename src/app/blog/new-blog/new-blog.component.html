@@ -1,11 +1,10 @@
-
 <div class="new-article-content-wrapper">
   <h1>
       New article
   </h1>
   
   <div class="button-row">
-    <button mat-raised-button [routerLink]="['../','news-list']" style="margin: 1rem;">
+    <button mat-raised-button [routerLink]="['/news/news-list']" style="margin: 1rem;">
       <mat-icon>arrow_back_ios</mat-icon>
       Back
     </button>
@@ -79,6 +78,13 @@
           
           <div formGroupName="thumbnailImage">
               <app-file-input [fileTypes]="['image/jpeg', 'image/jpg', 'image/png']" (fileDropped)="gethumbnailImage($event)"></app-file-input>
+            @if(blogForm.get('thumbnailImage.file')?.value) { 
+              <img
+                  [src]="blogForm.get('thumbnailImage.file')?.value"
+                  alt="{{ blogForm.get('thumbnailImage.file')?.value }}"
+                  class="img-preview">
+            }
+
               @if(blogForm.get('thumbnailImage.alt')) {
                 <mat-form-field appearance="outline">
                     <mat-label>Alt Text</mat-label>
