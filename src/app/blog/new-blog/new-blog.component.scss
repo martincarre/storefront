@@ -37,15 +37,7 @@ mat-slide-toggle {
   margin-bottom: 2rem; /* Space at the bottom */
 }
 
-/* CSS for image preview */
-.img-preview {
-  width: 250px;      /* Set a fixed width for the preview */
-  height: auto;      /* Auto height to maintain aspect ratio */
-  object-fit: cover; /* This ensures the image fits inside the defined width/height without stretching */
-  border-radius: 8px; /* Optional: Add some rounded corners */
-  border: 1px solid #ddd; /* Optional: Add a light border */
-  margin-top: 1rem;   /* Add some space at the top */
-}
+
 
 .button-row {
   display: flex;
@@ -57,9 +49,10 @@ mat-slide-toggle {
 }
 
 quill-editor {
-  min-height: 250px;
-  max-height: 250px;
+  min-height: 300px;
+  // max-height: 250px;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   overflow: auto;  // Make sure it doesn't overflow
 }
   /* Media query for smartphones (max width of 768px) */

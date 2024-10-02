@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit, signal, } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { COMMA, ENTER, P } from '@angular/cdk/keycodes';
 import { Router, RouterLink } from '@angular/router';
@@ -12,11 +12,13 @@ import { BlogService } from '../blog.service';
 import { NewBlogForm } from './new-blog-form.interface';
 import { BlogArticle } from '../blog-details/blog-article.interface';
 import { Subscription } from 'rxjs';
+import { SpinnerService } from '../../shared/spinner/spinner.service';
+import { ImgPreviewComponent } from '../../shared/img-preview/img-preview.component';
 
 @Component({
   selector: 'app-new-blog',
   standalone: true,
-  imports: [RouterLink, DynamicFormsModule, MatSlideToggleModule, MatCardModule, FileInputComponent, MatChipsModule, QuillModule, ],
+  imports: [RouterLink, DynamicFormsModule, MatSlideToggleModule, MatCardModule, FileInputComponent, MatChipsModule, QuillModule, ImgPreviewComponent, ],
   templateUrl: './new-blog.component.html',
   styleUrl: './new-blog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -25,6 +27,7 @@ export class NewBlogComponent implements OnInit, OnDestroy {
   private fb = inject<FormBuilder>(FormBuilder);
   private router = inject<Router>(Router);
   private blogService = inject<BlogService>(BlogService);
+  private spinner = inject<SpinnerService>(SpinnerService);
   tags = signal<string[]>([]);
   private currId = signal<string | null>(null);
   currArticle = signal<BlogArticle | null>(null);
@@ -51,8 +54,13 @@ export class NewBlogComponent implements OnInit, OnDestroy {
     return this.blogForm.get('sections') as FormArray;
   }
 
+  constructor() {
+    this.initializeForm();
+  }
+
   async ngOnInit() {
     if (this.articleIdInTheUrl()) {
+      this.spinner.show();
       this.currId.set(this.articleIdInTheUrl());
       const articleId = this.currId();
       if (articleId) {
@@ -62,12 +70,10 @@ export class NewBlogComponent implements OnInit, OnDestroy {
               const fetchedArticle = res.data as BlogArticle;
               this.currArticle.set(fetchedArticle);
               this.initializeForm(fetchedArticle);
+              this.spinner.hide();
             }
           });
       }
-    }
-    else {
-      this.initializeForm();
     }
   }
 
@@ -83,7 +89,7 @@ export class NewBlogComponent implements OnInit, OnDestroy {
       url: [article ? article.url : '', [Validators.maxLength(60)]],
       thumbnailImage: this.fb.group({
         file: [article ? article.thumbnailImage.imageUrl : null, Validators.required],
-        alt: [article ? article.thumbnailImage?.alt : '', [Validators.maxLength(45), Validators.required]],
+        alt: [article ? article.thumbnailImage.alt : '', [Validators.maxLength(45), Validators.required]],
       }),
       sections: this.fb.array([]), // FormArray to hold sections
     });
@@ -160,6 +166,10 @@ export class NewBlogComponent implements OnInit, OnDestroy {
       sectionImage.addControl('alt', this.fb.control('', [Validators.maxLength(45)]));
     }
   }
+
+  removeImage(imgGroup: AbstractControl | null): void {
+    console.log('remove image', imgGroup);
+  };
 
   /**
    * functions to handle tags 
@@ -255,11 +265,9 @@ export class NewBlogComponent implements OnInit, OnDestroy {
 
   async onPublish() {
     const articleToPublish = this.currArticle(); 
-    console.log(articleToPublish);
     // if there's no current article then save first. 
     // if there's a current article and the blogForm is dirty, save the changes
     if (!articleToPublish || (articleToPublish && this.blogForm.dirty)) {
-      console.log('saving article', articleToPublish);
       await this.onSave();
     }
 

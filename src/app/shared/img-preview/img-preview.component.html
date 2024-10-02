@@ -1,0 +1,12 @@
+<mat-card class="img-preview">
+    <!-- Close button -->
+    <button mat-icon-button class="close-button" (click)="close.emit()">
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <!-- Image preview -->
+    <img class="preview-image"
+         mat-card-image
+         [src]="imgSrc()"
+         alt="{{ imgAlt() }}">
+</mat-card>

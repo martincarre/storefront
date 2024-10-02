@@ -1,0 +1,43 @@
+/* CSS for image preview */
+.img-preview {
+    width: 300px;
+    padding: 0;
+    position: relative;
+    border-radius: 8px; /* Make sure the card itself has rounded corners */
+    overflow: hidden; /* Ensure image respects the card’s borders */
+}
+  
+  /* Style the close button */
+.close-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional shadow for visibility */
+    padding: 0; /* Ensure no extra padding */
+}
+  
+  /* Ensure the icon is perfectly centered */
+.close-button mat-icon {
+    font-size: 18px;
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    line-height: 1;
+    display: block;
+}
+  
+/* Target only the images within .img-preview */
+.img-preview .preview-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px; /* Apply same rounding as the card */
+}
