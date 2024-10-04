@@ -14,13 +14,4 @@ export class ImgPreviewComponent {
   close = output();
   imgSrc = input.required<string>();
   imgAlt = input<string>('default alt text');
-
- constructor() {
-  
- }
-
- ngOnInit(): void {
-  console.log('imgSrc', this.imgSrc());
-  console.log('imgAlt', this.imgAlt());
- }
 }

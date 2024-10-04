@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class FileInputComponent implements OnInit {
   fileTypes = input.required<string[]>();
   fileDropped = output<File>();
+  clearFile = output<void>();
   isDragging = false;
   selectedFile: File | null = null;
   allowedFileTypes: string | null = null; 
@@ -64,7 +65,8 @@ export class FileInputComponent implements OnInit {
   }
 
   // Clear the selected file
-  clearFile(): void {
+  onClearFile(): void {
     this.selectedFile = null;
+    this.clearFile.emit();
   }
 }

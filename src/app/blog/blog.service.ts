@@ -28,7 +28,7 @@ export class BlogService {
   /**
    * Save a new blog article to Firestore.
    * @param blogForm - The form data for the new blog article.
-   */
+  */
   async saveBlogArticle(blogForm: NewBlogForm): Promise<{success: boolean, savedArticle: BlogArticle | null}> {
     try {
 

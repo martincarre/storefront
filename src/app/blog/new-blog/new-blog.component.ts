@@ -28,11 +28,14 @@ export class NewBlogComponent implements OnInit, OnDestroy {
   private router = inject<Router>(Router);
   private blogService = inject<BlogService>(BlogService);
   private spinner = inject<SpinnerService>(SpinnerService);
+
   tags = signal<string[]>([]);
+
+  thumbnailPreviewUrl: string | null = null;
+  sectionPreviewUrls: (string | null)[] = [];
+
   private currId = signal<string | null>(null);
   currArticle = signal<BlogArticle | null>(null);
-
-
   articleIdInTheUrl = input<string | null>(null, { alias: 'articleId' });
   private articleSub: Subscription = new Subscription();
   
@@ -95,6 +98,7 @@ export class NewBlogComponent implements OnInit, OnDestroy {
     });
     
     if (article) {
+      this.thumbnailPreviewUrl = article.thumbnailImage.imageUrl;
       // Clear existing sections in the FormArray
       this.sections.clear();
     
@@ -110,6 +114,7 @@ export class NewBlogComponent implements OnInit, OnDestroy {
           })
         });
         this.sections.push(sectionGroup);
+        this.sectionPreviewUrls.push(section.illustration?.imageUrl || null);
       });
     
       // Populate the tags if they exist
@@ -149,27 +154,86 @@ export class NewBlogComponent implements OnInit, OnDestroy {
     this.sections.removeAt(index);
   }
 
-  gethumbnailImage(file: File): void {
+  getThumbnailImage(file: File): void {
     const thumbnailImageGroup = this.blogForm.get('thumbnailImage') as FormGroup;
+    
+    if (thumbnailImageGroup.get('file')?.value) {
+      this.removeImage(thumbnailImageGroup, 'thumbnail');
+    }
+  
+    // Generate the preview URL for the file
+    const reader = new FileReader();
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      this.thumbnailPreviewUrl = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  
     thumbnailImageGroup.patchValue({ file: file });
-    // Add the 'alt' control if it doesn't exist
+  
     if (!thumbnailImageGroup.contains('alt')) {
       thumbnailImageGroup.addControl('alt', this.fb.control('', [Validators.maxLength(45)]));
     }
   }
-
-  getSectionImage(file: File, index: number): void { 
+  
+  getSectionImage(file: File, index: number): void {
     const sectionImage = (this.blogForm.get('sections') as FormArray).at(index).get('illustration') as FormGroup;
+  
+    if (sectionImage.get('file')?.value) {
+      this.removeImage(sectionImage, 'section');
+    }
+  
+    // Generate the preview URL for the file
+    const reader = new FileReader();
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      this.sectionPreviewUrls[index] = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  
     sectionImage.patchValue({ file: file });
-
+  
     if (!sectionImage.contains('alt')) {
       sectionImage.addControl('alt', this.fb.control('', [Validators.maxLength(45)]));
     }
   }
+  
+  removeImage(imgGroup: AbstractControl | null, origin: string): void {
+    switch (origin) {
+      case 'thumbnail':
+        this.thumbnailPreviewUrl = null;
+        break;
+      case 'section':
+        const index = this.sectionPreviewUrls.indexOf(imgGroup?.get('file')?.value);
+        if (index >= 0) {
+          this.sectionPreviewUrls[index] = null;
+        }
+        break;
+    }
+    if (imgGroup) {
+      imgGroup.patchValue({ file: null, alt: '' });
+    }
+  }
 
-  removeImage(imgGroup: AbstractControl | null): void {
-    console.log('remove image', imgGroup);
-  };
+  // gethumbnailImage(file: File): void {
+  //   const thumbnailImageGroup = this.blogForm.get('thumbnailImage') as FormGroup;
+  //   thumbnailImageGroup.patchValue({ file: file });
+  //   // Add the 'alt' control if it doesn't exist
+  //   if (!thumbnailImageGroup.contains('alt')) {
+  //     thumbnailImageGroup.addControl('alt', this.fb.control('', [Validators.maxLength(45)]));
+  //   }
+  // }
+
+  // getSectionImage(file: File, index: number): void { 
+  //   const sectionImage = (this.blogForm.get('sections') as FormArray).at(index).get('illustration') as FormGroup;
+  //   sectionImage.patchValue({ file: file });
+
+  //   if (!sectionImage.contains('alt')) {
+  //     sectionImage.addControl('alt', this.fb.control('', [Validators.maxLength(45)]));
+  //   }
+  // }
+
+  // removeImage(imgGroup: AbstractControl | null): void {
+  //   console.log('remove image', imgGroup);
+  // };
 
   /**
    * functions to handle tags 

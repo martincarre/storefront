@@ -27,7 +27,7 @@
             <mat-divider></mat-divider>
             <p><strong>Selected File:</strong> {{ selectedFile.name }}</p>
             <p><strong>File Size:</strong> {{ selectedFile.size | number }} bytes</p>
-            <button mat-stroked-button color="warn" (click)="clearFile()">Remove</button>
+            <button mat-stroked-button color="warn" (click)="onClearFile()">Remove</button>
         </div>
     }
 </div>

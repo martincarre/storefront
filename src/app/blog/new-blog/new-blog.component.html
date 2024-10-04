@@ -77,14 +77,14 @@
         </mat-form-field>
           
           <div formGroupName="thumbnailImage">
-            <app-file-input [fileTypes]="['image/jpeg', 'image/jpg', 'image/png']" (fileDropped)="gethumbnailImage($event)"></app-file-input>
+            <app-file-input [fileTypes]="['image/jpeg', 'image/jpg', 'image/png']" (fileDropped)="getThumbnailImage($event)"></app-file-input>
             <mat-form-field appearance="outline">
               <mat-label>Alt Text</mat-label>
               <input matInput formControlName="alt" placeholder="Thumbnail Alt Text">
               <mat-hint>Max 45 characters</mat-hint>
             </mat-form-field>
-            @if(blogForm.get('thumbnailImage.file')?.value) { 
-              <app-img-preview [imgSrc]="blogForm.get('thumbnailImage.file')?.value" [imgAlt]="blogForm.get('thumbnailImage.file')?.value" (close)="removeImage(blogForm.get('thumbnailImage.file')?.value)"></app-img-preview>
+            @if(thumbnailPreviewUrl) { 
+              <app-img-preview [imgSrc]="thumbnailPreviewUrl" [imgAlt]="blogForm.get('thumbnailImage.file')?.value" (close)="removeImage(blogForm.get('thumbnailImage'), 'thumbnail')"></app-img-preview>
             }
           </div>
           
@@ -124,8 +124,8 @@
                         <input matInput formControlName="alt" placeholder="Alt Text for Illustration">
                     </mat-form-field>
                   }
-                  @if(section.get('illustration.file')?.value) { 
-                    <app-img-preview [imgSrc]="section.get('illustration.file')?.value" [imgAlt]="section.get('illustration.alt')?.value" (close)="removeImage(section.get('illustration.file')?.value)"></app-img-preview>
+                  @if(sectionPreviewUrls[i]) { 
+                    <app-img-preview [imgSrc]="sectionPreviewUrls[i]!" [imgAlt]="section.get('illustration.alt')?.value" (close)="removeImage(section.get('illustration'), 'section')"></app-img-preview>
                   }
               </div>
   
