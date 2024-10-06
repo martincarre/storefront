@@ -1,6 +1,6 @@
 import { CallToAction } from "../blog-details/blog-article.interface";
 
-export interface NewBlogForm {
+export interface BlogForm {
     id: string,
     title: string;
     subtitle: string;

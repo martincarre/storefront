@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { BlogArticle, Section } from './blog-details/blog-article.interface';
 import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
-import { NewBlogForm } from './new-blog/new-blog-form.interface';;
 import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { FunctionServerResponse } from '../shared/function-server-response.interface';
 import { updateDoc } from 'firebase/firestore';
+import { BlogForm } from './blogpost-form/new-blog-form.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class BlogService {
    * Save a new blog article to Firestore.
    * @param blogForm - The form data for the new blog article.
   */
-  async saveBlogArticle(blogForm: NewBlogForm): Promise<{success: boolean, savedArticle: BlogArticle | null}> {
+  async saveBlogArticle(blogForm: BlogForm): Promise<{success: boolean, savedArticle: BlogArticle | null}> {
     try {
 
       // Adapt the url to become the document ID

@@ -1,33 +1,55 @@
 <div class="file-input-card">
-    <div
-      class="file-dropzone"
-      (dragover)="onDragOver($event)"
-      (dragleave)="onDragLeave($event)"
-      (drop)="onDrop($event)"
-      [ngClass]="{ 'file-dropzone-hover': isDragging }"
-    >
-      <mat-icon>cloud_upload</mat-icon>
-      <p>Drag and drop a file here</p>
-      <p>{{ allowedFileTypes }}</p>
-      <p>or</p>
-      <button mat-raised-button color="primary" (click)="fileInput.click()">Browse</button>
-      <input
-        #fileInput
-        type="file"
-        [accept]="allowedFileTypes"
-        (change)="onFileSelected($event)"
-        class="file-input"
-        hidden
-      />
+  <div
+    class="file-dropzone"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+    [ngClass]="{ 'file-dropzone-hover': isDragging }"
+  >
+    <mat-icon>cloud_upload</mat-icon>
+    <p>Drag and drop a file here</p>
+    <p>{{ allowedFileTypes }}</p>
+    <p>or</p>
+    <button mat-raised-button color="primary" (click)="fileInput.click()">Browse</button>
+    <input
+      #fileInput
+      type="file"
+      [accept]="allowedFileTypes"
+      (change)="onFileSelected($event)"
+      class="file-input"
+      hidden
+    />
+  </div>
+
+  <!-- Display file information after selection -->
+  @if (selectedFile || initialFileUrl()) {
+    <div class="file-info">
+      <mat-divider></mat-divider>
+      @if (selectedFile) {
+        <p><strong>Selected File:</strong> {{ selectedFile.name }}</p>
+        <p><strong>File Size:</strong> {{ selectedFile.size | number }} bytes</p>
+      }
+
+      <!-- Display preview if it's an image or PDF -->
+      @switch(fileType()) {
+        @case ('image') {
+          <img [src]="previewUrl()" alt="Image Preview" style="max-width: 100%; height: auto;" />
+        }
+        @case ('pdf') {
+          <iframe [src]="previewUrl()" width="100%" height="500px"></iframe>
+        }
+        @case ('video') {
+          <video controls width="100%" height="auto">
+            <source [src]="previewUrl()" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        }
+        @case ('other') {
+          <!-- If it's not an image or PDF, just display file info -->
+          <p>No preview available for this file type.</p>
+        }
+      }
+      <button mat-stroked-button color="warn" (click)="onClearFile()">Remove</button>
     </div>
-  
-    <!-- Display file information after selection -->
-     @if(selectedFile) {
-        <div class="file-info">
-            <mat-divider></mat-divider>
-            <p><strong>Selected File:</strong> {{ selectedFile.name }}</p>
-            <p><strong>File Size:</strong> {{ selectedFile.size | number }} bytes</p>
-            <button mat-stroked-button color="warn" (click)="onClearFile()">Remove</button>
-        </div>
-    }
+  }
 </div>

@@ -3,6 +3,7 @@
         <mat-icon>arrow_back_ios</mat-icon>
         Back
     </button>
+
     <div class="spacer"></div>
     @if (article()) {
         <button mat-raised-button color="warn" [routerLink]="['../..', 'new-article', article()?.id ]">

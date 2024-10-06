@@ -1,0 +1,144 @@
+<div class="button-row">
+  <button mat-raised-button [routerLink]="['/news/news-list']" style="margin: 1rem;">
+    <mat-icon>arrow_back_ios</mat-icon>
+    Back
+  </button>
+
+  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" style="margin: 1rem;" [disabled]="blogForm.invalid || !blogForm.dirty">
+    <mat-icon>save</mat-icon>
+    Save Article
+  </button>
+
+  <div class="spacer"></div> <!-- Spacer between the buttons -->
+
+  @if (editMode) { 
+      <!-- TODO: Add if statement on this one if we're in edit mode -->
+      <button mat-raised-button color="warn" style="margin: 1rem;" (click)="onPublish()">
+        <mat-icon>publish</mat-icon>
+        Publish Article
+      </button>
+  }
+</div>
+
+<!-- Blog Creation Form -->
+<form [formGroup]="blogForm" class="card-container">
+    <!-- Form for the Main Blog Details -->
+    <mat-card style="background-color: rgba(220, 0, 49, 0.15) !important;">
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" placeholder="Blog Title">
+        <mat-hint>Max 120 characters</mat-hint>
+        <mat-error>Title is required (Max 120 characters)</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Subtitle</mat-label>
+        <input matInput formControlName="subtitle" placeholder="Blog Subtitle">
+        <mat-hint>Max 120 characters</mat-hint>
+        <mat-error>Subtitle is required (Max 120 characters)</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" placeholder="Blog Description"></textarea>
+        <mat-hint>Max 300 characters</mat-hint>
+        <mat-error>Description is required (Max 300 characters)</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+          <mat-label>Custom URL</mat-label>
+          <input matInput formControlName="url" placeholder="desired-url-for-the-article">
+          <mat-hint>If left empty the article title will serve as URL. The URL is limited to 60 characters</mat-hint>
+          <mat-error>URL is required</mat-error>
+      </mat-form-field>
+
+        <!-- Tags input -->
+      <mat-form-field appearance="outline" style="margin-bottom: 1rem;">
+        <mat-label>Tags</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Tags">
+          @for (tag of tags(); let i = $index; track i) {
+            <mat-chip-row (removed)="removeTag(tag)" [editable]="true" (edited)="editTag(tag, $event)"[aria-description]="'press enter to edit ' + tag">
+              {{tag}}
+              <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+          <input
+            placeholder="Add a tag..."
+            [matChipInputFor]="chipGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="true"
+            (matChipInputTokenEnd)="addTag($event)">
+        </mat-chip-grid>
+        <mat-hint>Tags are limited to 60 characters.</mat-hint>
+      </mat-form-field>
+        
+        <div formGroupName="thumbnailImage">
+          <app-file-input 
+          [fileTypes]="['image/jpeg', 'image/jpg', 'image/png']" 
+          (fileDropped)="handleImage($event, 'thumbnailImage')"
+          />
+          <mat-form-field appearance="outline">
+            <mat-label>Alt Text</mat-label>
+            <input matInput formControlName="alt" placeholder="Thumbnail Alt Text">
+            <mat-hint>Max 45 characters</mat-hint>
+          </mat-form-field>
+        </div>
+        
+    </mat-card>
+    <!-- Section Form Array -->
+    <ng-container formArrayName="sections">
+      @for (section of sections.controls; let i = $index; track i) {
+        <mat-card [formGroupName]="i" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>
+                <h3>
+                    Section {{ i + 1 }}
+                </h3>
+            </mat-card-title>
+            @if (sections.controls.length > 1) {
+                <button style="margin-left: 0.5rem; color: red" mat-icon-button (click)="removeSection(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+            }
+          </mat-card-header>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Section Title</mat-label>
+            <input matInput formControlName="title" placeholder="Section Title">
+            <mat-hint>Max 120 characters</mat-hint>
+          </mat-form-field>
+  
+
+          <quill-editor formControlName="content"></quill-editor>
+  
+          <!-- Illustration -->
+            <div formGroupName="illustration">
+              <app-file-input 
+              [fileTypes]="['image/jpeg', 'image/jpg', 'image/png']" 
+              (fileDropped)="handleImage($event, 'sections', i)"
+              />
+                @if (section.get('illustration.alt')) {
+                  <mat-form-field appearance="outline">
+                      <mat-label>Alt Text</mat-label>
+                      <input matInput formControlName="alt" placeholder="Alt Text for Illustration">
+                  </mat-form-field>
+                }
+            </div>
+
+          <!-- Divider -->
+          <mat-slide-toggle formControlName="divider" color="primary">Include Divider</mat-slide-toggle>
+
+        </mat-card>
+      }
+    </ng-container>
+
+    <!-- Add Section Button #2 -->
+    @if (sections.controls.length < 10) {
+      <button mat-fab extended color="accent" (click)="addSection()" type="button" style="margin-bottom: 2rem;">
+        <mat-icon>add</mat-icon> 
+        Add Section
+      </button>
+    }
+</form>

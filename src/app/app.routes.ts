@@ -1,9 +1,7 @@
 import { Routes } from '@angular/router';
 import { BlogListComponent } from './blog/blog-list/blog-list.component';
 import { BlogDetailsComponent } from './blog/blog-details/blog-details.component';
-import { NewBlogComponent } from './blog/new-blog/new-blog.component';
-import { BlogService } from './blog/blog.service';
-import { inject } from '@angular/core';
+import { BlogpostNewComponent } from './blog/blogpost-new/blogpost-new.component';
 
 export const routes: Routes = [
     {
@@ -35,12 +33,12 @@ export const routes: Routes = [
             },
             {
                 path: 'new-article',
-                component: NewBlogComponent,
+                component: BlogpostNewComponent,
                 title: 'New Article',
             },
             {
                 path: 'new-article/:articleId',
-                component: NewBlogComponent,
+                component: BlogpostNewComponent,
                 title: 'Edit Article',
             }
         ]

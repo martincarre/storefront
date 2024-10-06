@@ -7,11 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import { Timestamp } from 'firebase/firestore';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { FunctionServerResponse } from '../../shared/function-server-response.interface';
 import { Subscription } from 'rxjs';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SpinnerService } from '../../shared/spinner/spinner.service';
 
 @Component({
   selector: 'app-blog-details',
@@ -23,6 +23,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class BlogDetailsComponent implements OnInit, OnDestroy {
   private blogService = inject<BlogService>(BlogService);
+  private spinner = inject<SpinnerService>(SpinnerService);
   private articleSubscription: Subscription = new Subscription();
   private sanitizer = inject<DomSanitizer>(DomSanitizer);
   articleId = input.required<string>();
@@ -38,8 +39,11 @@ export class BlogDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.articleId()) {
+      this.spinner.show();
       this.articleSubscription = this.blogService.fetchBlogArticleById(this.articleId()).subscribe((res: FunctionServerResponse) => {
+        console.log('res', res);
         this.article.set(res.data as BlogArticle);
+        this.spinner.hide();
       });
     }
   }
